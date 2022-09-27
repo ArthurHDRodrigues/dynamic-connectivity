@@ -1,3 +1,7 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "eulerSequence.h"
 #include "dynamic_florest.h"
 
 int main(){
