@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include "eulerSequence.h"
 #include "dynamic_florest.h"
@@ -37,7 +38,7 @@ void link (struct dynamicForest* F, struct Treap* v, struct Treap* w){
    */
   bringToFront(v);
   bringToFront(w);
-
+  printf("passou dos bring to Front\n");
   struct Treap* VW = malloc(sizeof(struct Treap));
   struct Treap* WV = malloc(sizeof(struct Treap));
   struct Treap* VV = malloc(sizeof(struct Treap));

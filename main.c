@@ -21,12 +21,14 @@ int main(){
     
     if ( raizA != raizB ){
       i++;
+      //link(&amazonia, raizA, raizB);
       concatenate(raizA, raizB);
     }
   }
   
   printf("\nÁRVORE:\n");
   printSeq(find(&(amazonia.Forest[0])));
+  printf("\n");
   
   struct Treap* raiz = find(&(amazonia.Forest[0]));
   
