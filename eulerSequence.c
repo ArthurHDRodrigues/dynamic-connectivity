@@ -60,27 +60,13 @@ struct Treap* slice(struct Treap** raiz, unsigned int K){
   return R;
 }
 
-struct Treap* concatenate(struct Treap* raizA, struct Treap* raizB){
+struct Treap* concatenate(struct Treap* nodeA, struct Treap* nodeB){
   /*
    * Recebe duas sequências Eulerianas e retorna a concatenação delas,
    * mantendo a propriedade de ser Eulerianas
    */
-  struct Treap* AB = malloc(sizeof(struct Treap));
-  struct Treap* BA = malloc(sizeof(struct Treap));
-  struct Treap* AA = malloc(sizeof(struct Treap));
   
-  //Pega último==primeiro elemento da sequência A
-  struct Treap* A = search(raizA,1);
-  struct Treap* B = search(raizB,1);
-  
-  *AA = eulerSeq(A->valor.to, A->valor.to);
-  *AB = eulerSeq(A->valor.to, B->valor.to);
-  *BA = eulerSeq(B->valor.to, A->valor.to);
-  
-  AB->inv = BA;
-  BA->inv = AB;
-  
-  return join(join(join(join(raizA, AB),raizB),BA), AA);
+  return join(find(nodeA),find(nodeB));
 }
 
 
