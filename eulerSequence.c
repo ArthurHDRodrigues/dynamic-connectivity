@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "treaps.h"
+#include "eulerSequence.h"
 
 /**************************************************\
  *        Euler Sequence e seus método            *

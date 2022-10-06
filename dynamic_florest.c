@@ -38,19 +38,32 @@ void link (struct dynamicForest* F, struct Treap* v, struct Treap* w){
    */
   bringToFront(v);
   bringToFront(w);
-  printf("passou dos bring to Front\n");
+  
+  printSeq(find(v));
+  printf("\n");
+  printSeq(find(w));
+  
+  printf("\npassou dos bring to Front\n");
   struct Treap* VW = malloc(sizeof(struct Treap));
   struct Treap* WV = malloc(sizeof(struct Treap));
   struct Treap* VV = malloc(sizeof(struct Treap));
   
-  struct Treap* ww = search(w,1); //TODO ver se não devia ser raiz!
-  struct Treap* vv = search(v,1);
+  struct Treap* ww = w;//search(w,1); //TODO ver se não devia ser raiz!
+  struct Treap* vv = v;//search(v,1);
   
   *VW = eulerSeq(vv->valor.to, ww->valor.to);
   *WV = eulerSeq(ww->valor.to, vv->valor.to);
   *VV = eulerSeq(vv->valor.to, vv->valor.to);
   
-  join(join(join(join(v, VW), w), WV), VV);
+  printf("seq adicionais\n");
+  printSeq(VW); printSeq(WV); printSeq(VV);
+  printf("\n");
+  concatenate(concatenate(concatenate(concatenate(v, VW), w), WV), VV);
+  printf("\nseq finais\n");
+  printSeq(find(v));
+  printf("\n");
+  printSeq(find(w));
+  printf("\nfim de link\n\n\n");
 }
 
 

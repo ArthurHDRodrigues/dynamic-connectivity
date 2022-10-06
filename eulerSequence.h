@@ -4,9 +4,9 @@
 #include "graph.h"
 #include "treaps.h"
 
-struct Treap eulerSeq( struct vertice from, struct vertice to);
-
 void printSeq(struct Treap* treap);
+
+struct Treap eulerSeq( struct vertice from, struct vertice to);
 
 struct Treap* find(struct Treap* node);
 
