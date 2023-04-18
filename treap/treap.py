@@ -45,7 +45,7 @@ def search(treap,key):
     if(treap == None): return None
     if(treap.esq and treap.esq.tam >= key):
         return search(treap.esq,key)
-    if(treap.esq.tam+1 == key):
+    if(treap.esq and treap.esq.tam+1 == key):
         return treap
     return search(treap.dir,key-getSize(treap.esq)-1)
 
