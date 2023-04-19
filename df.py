@@ -4,7 +4,7 @@ class dynamicForrest:
     def __init__(self,n):
         self.n = n
         self.H = dict()
-        for i in range(1,n):
+        for i in range(1,n+1):
             self.H[(i,i)] = treapNode((i,i))
 
 def connectedDF(F,u,v):
@@ -16,13 +16,16 @@ def connectedDF(F,u,v):
 def makeStart(F,u):
     uu = F.H[(u,u)]
     T = getRoot(uu)
+    printNode(uu)
     vv = search(T,1)
+    printNode(vv)
+    v = vv.info[0]
     if(vv != uu):
         F.H[(v,v)] = vv
-        A,B = split(T,uu)
+        A,B = split(uu)
         vv = getLast(B)
-        B,C = split(T,vv)
-        uu = treapNote((u,u))
+        B,C = split(vv)
+        uu = treapNode((u,u))
         join(join(B,A),uu)
 
 
@@ -31,9 +34,9 @@ def addEdgeDF(F,u,v):
     makeStart(F,v)
     U = getRoot(F.H[(u,u)])
     V = getRoot(F.H[(v,v)])
-    uv = treapNote((u,v))
-    vu = treapNote((v,u))
-    uu = treapNote((u,u))
+    uv = treapNode((u,v))
+    vu = treapNode((v,u))
+    uu = treapNode((u,u))
     F.H[(u,v)] = uv
     F.H[(v,u)] = vu
     join(join(join(join(U,uv),V),vu),uu)
@@ -56,5 +59,3 @@ def remEdgeDF(F,u,v):
     del(F.H[(u,v)])
     del(F.H[(v,u)])
     join(A,E)
-
-

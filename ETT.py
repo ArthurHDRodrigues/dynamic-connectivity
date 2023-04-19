@@ -20,6 +20,15 @@ def printNode(treap):
         return
     print("treap is None")
 
+def printSequence(treap):
+    if(treap):
+        if(treap.esq):
+            printSequence(treap.esq)
+        print(treap.info,end='')
+        if(treap.dir):
+            printSequence(treap.dir)
+
+
 
 def getSize(treap):
     if (treap != None):
@@ -43,9 +52,9 @@ def getRoot(treap):
 
 def search(treap,key):
     if(treap == None): return None
-    if(treap.esq and treap.esq.tam >= key):
+    if(getSize(treap.esq) >= key):
         return search(treap.esq,key)
-    if(treap.esq and treap.esq.tam+1 == key):
+    if(getSize(treap.esq)+1 == key):
         return treap
     return search(treap.dir,key-getSize(treap.esq)-1)
 

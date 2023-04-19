@@ -4,27 +4,14 @@ from df  import *
 
 def main():
 
-    treap = treapNode(1)
-    for i in range(2,100):
-        tmp = treapNode(i)
-        treap = join(treap,tmp)
-    
-    printNode(treap)
-
-
-    rand = random.randint(10,90)
-    print("rand:",rand)
-    u = search(treap,rand)
-    printNode(u)
-    treapA,treapB = split(u)
-
-#######################################3
 
     F = dynamicForrest(100)
 
-    for i in list(F.H):
-        printNode(F.H[i])
+    #addEdgeDF(F,4,6)
 
-    print(connectedDF(F,1,5))
+    for i in range(1,100):
+        addEdgeDF(F,i,i+1)
+    printSequence(getRoot(F.H[(1,1)]))
+
 
 main()
