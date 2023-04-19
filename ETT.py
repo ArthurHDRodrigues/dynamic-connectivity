@@ -20,14 +20,18 @@ def printNode(treap):
         return
     print("treap is None")
 
+
 def printSequence(treap):
+    printSequenceRecursive(treap)
+    print("") #print newline
+
+def printSequenceRecursive(treap):
     if(treap):
         if(treap.esq):
-            printSequence(treap.esq)
+            printSequenceRecursive(treap.esq)
         print(treap.info,end='')
         if(treap.dir):
-            printSequence(treap.dir)
-
+            printSequenceRecursive(treap.dir)
 
 
 def getSize(treap):
@@ -62,9 +66,9 @@ def order(treap):
     if(treap == None): return 0
     order=1+getSize(treap.esq)
     tmp = treap
-    while(treap.parent):
-        if(treap == treap.parent.dir):
-            order += 1+getSize(treap.parent.esq)
+    while(tmp.parent):
+        if(tmp == tmp.parent.dir):
+            order += 1+getSize(tmp.parent.esq)
         tmp = tmp.parent
     return order
 
@@ -92,7 +96,7 @@ def split(node):
     L = node.esq
 
     node.esq = None
-    if(L != None): L.tam = getSize(L.dir) + getSize(L.esq) + 1
+    if(R != None): R.tam = getSize(R.dir) + getSize(R.esq) + 1
     tmp = node
     while(tmp.parent != None):
         if(tmp.parent.dir == tmp):
@@ -110,7 +114,3 @@ def split(node):
     if(L != None): L.parent = None
     if(R != None): R.parent = None
     return L,R
-
-
-
-

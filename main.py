@@ -3,15 +3,24 @@ from df  import *
 
 
 def main():
-
-
     F = dynamicForrest(100)
-
-    #addEdgeDF(F,4,6)
 
     for i in range(1,100):
         addEdgeDF(F,i,i+1)
-    printSequence(getRoot(F.H[(1,1)]))
+
+    for i in [24,64,66,42,92]:
+        remEdgeDF(F,i,i+1)
+
+    alreadyPrinted = []
+    for i in range(1,101):
+        ii = F.H[i,i]
+        if ii == None:
+            print("Error!!", i, "é None")
+        else:
+            root = getRoot(ii)
+            if root not in alreadyPrinted:
+                printSequence(root)
+                alreadyPrinted.append(root)
 
 
 main()

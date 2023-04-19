@@ -16,9 +16,7 @@ def connectedDF(F,u,v):
 def makeStart(F,u):
     uu = F.H[(u,u)]
     T = getRoot(uu)
-    printNode(uu)
     vv = search(T,1)
-    printNode(vv)
     v = vv.info[0]
     if(vv != uu):
         F.H[(v,v)] = vv
@@ -43,19 +41,22 @@ def addEdgeDF(F,u,v):
 
 
 def remEdgeDF(F,u,v):
-    Kuv = order(F.H[(u,v)])
-    Kvu = order(F.H[(v,u)])
+    uv = F.H[(u,v)]
+    vu = F.H[(v,u)]
+    Kuv = order(uv)
+    Kvu = order(vu)
     if(Kuv > Kvu):
         remEdgeDF(F,v,u)
         return
     S = getRoot(uv)
     uu = search(S,Kuv-1)
     vv = search(S,Kuv+1)
-    A,B = split(S,uu)
-    B,C = split(B,vv)
-    C,D = split(C,vu)
-    uu = search(D,2)
-    D,E = split(D,uu)
+    A,B = split(uu) #Split in S
+    B,C = split(vv) #apply split in B
+    C,D = split(vu) #split in C
+    xx = search(D,2)
+    D,E = split(xx) #spli in D
+    F.H[(u,u)] = xx
     del(F.H[(u,v)])
     del(F.H[(v,u)])
     join(A,E)
