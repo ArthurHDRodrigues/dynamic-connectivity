@@ -1,19 +1,13 @@
-
-
-
-
-
 class graph:
     def __init__(self,n):
-        self.L = []
+        self.AL = []
         for i in range(n):
-            self.L.append(set())
-        #def __contains__(self,edge):
+            self.AL.append(set())
 
-def addEdgeGAL(graph,u,v):
-    graph.L[u].add(v)
-    graph.L[v].add(u)
+def addEdgeGLA(G,u,v):
+    G.AL[u].add(v)
+    G.AL[v].add(u)
 
-def remEdgeGAL(graph,u,v):
-    graph.L[u].remove(v)
-    graph.L[v].remove(u)
+def delEdgeGLA(G,u,v):
+    G.AL[u].remove(v)
+    G.AL[v].remove(u)
