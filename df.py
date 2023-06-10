@@ -19,6 +19,8 @@ def makeStart(F,u):
     vv = search(T,1)
     v = vv.info[0]
     if(vv != uu):
+        vv.has_reserve = F.H[(v,v)].has_reserve
+        updateReserveToRoot(vv)
         F.H[(v,v)] = vv
         A,B = split(uu)
         vv = getLast(B)
@@ -28,12 +30,14 @@ def makeStart(F,u):
 
 
 def addEdgeDF(F,u,v):
+    if (u,v) in F.H:
+        return
     makeStart(F,u)
     makeStart(F,v)
     U = getRoot(F.H[(u,u)])
     V = getRoot(F.H[(v,v)])
-    uv = treapNode((u,v))
-    vu = treapNode((v,u))
+    uv = treapNode((u,v),is_level=1)
+    vu = treapNode((v,u),is_level=1)
     uu = treapNode((u,u))
     F.H[(u,v)] = uv
     F.H[(v,u)] = vu
@@ -56,6 +60,8 @@ def remEdgeDF(F,u,v):
     C,D = split(vu) #split in C
     xx = search(D,2)
     D,E = split(xx) #spli in D
+    xx.has_reserve = F.H[(u,u)].has_reserve
+    updateReserveToRoot(xx)
     F.H[(u,u)] = xx
     del(F.H[(u,v)])
     del(F.H[(v,u)])

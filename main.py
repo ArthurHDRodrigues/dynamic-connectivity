@@ -1,26 +1,19 @@
-from ETT import *
-from df  import *
+from dg  import *
+from ETT  import *
 
 
 def main():
-    F = dynamicForrest(100)
+    G = dynamicGraph(100)
 
     for i in range(1,100):
-        addEdgeDF(F,i,i+1)
+        addEdge(G,i,i+1)
 
-    for i in [24,64,66,42,92]:
-        remEdgeDF(F,i,i+1)
-
-    alreadyPrinted = []
-    for i in range(1,101):
-        ii = F.H[i,i]
-        if ii == None:
-            print("Error!!", i, "é None")
-        else:
-            root = getRoot(ii)
-            if root not in alreadyPrinted:
-                printSequence(root)
-                alreadyPrinted.append(root)
-
-
+    addEdge(G,5,20)
+    addEdge(G,35,50)
+    addEdge(G,78,3)
+    printDG(G)
+    #printSequence(getRoot(G.F[G.maxLevel].H[(1,1)]))
+    remEdge(G,10,11)
+    printDG(G)
+    #printSequence(getRoot(G.F[G.maxLevel].H[(1,1)]))
 main()

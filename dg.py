@@ -1,28 +1,91 @@
-from math import log2
+from math import log2,ceil
 from df import *
+from ETT import *
 from graph import *
 
 class dynamicGraph:
     def __init__(self,n):
         self.n = n
-        self.nivel = log2(n)
+        self.maxLevel = ceil(log2(n))
         self.F = ['']
         self.R = ['']
-        for i in range(self.nivel):
+        self.level = dict()
+        for i in range(self.maxLevel):
             Fi = dynamicForrest(n)
             Ri = graph(n)
             self.F.append(Fi)
             self.R.append(Ri)
 
+def printDG(G):
+    print("maxLevel  : ",G.level)
+    print("reserve   : ",getRoot(G.F[G.maxLevel].H[(1,1)]).reserve_count)
+    print("edge level: ",getRoot(G.F[G.maxLevel].H[(1,1)]).level_count)
+
+
 def addEdge(G,u,v):
-    if connectedDF(G.F[G.nivel],u,v):
-        addEdgeGLA(G.R[G.nivel],u,v)
+    G.level[(u,v)] = G.maxLevel
+    G.level[(v,u)] = G.maxLevel
+    if connectedDF(G.F[G.maxLevel],u,v):
+        addEdgeGLA(G.R[G.maxLevel],u,v)
+        uu = G.F[G.maxLevel].H[(u,u)]
+        uu.has_reserve += 1
+        updateReserveToRoot(uu)
+
+        vv = G.F[G.maxLevel].H[(v,v)]
+        vv.has_reserve += 1
+        updateReserveToRoot(vv)
+
     else:
-        addEdgeDF(G.F[G.nivel],u,v)
+        addEdgeDF(G.F[G.maxLevel],u,v)
 
 def connected(G,u,v):
-    return connectedDF(G.F[G.nivel],u,v)
+    return connectedDF(G.F[G.maxLevel],u,v)
 
 def remEdge(G,u,v):
-    return
+    if G.F[G.maxLevel].H[(u,v)] != None:
+        for i in range(G.level[(u,v)],G.maxLevel+1):
+            remEdgeDF(G.F[i],u,v)
+        replace(G,u,v,G.level[(u,v)])
+    else:
+        remEdgeGLA(G.R[G.level[(u,v)]],u,v)
+    del(G.level[(u,v)])
+    del(G.level[(v,u)])
+
+
+def replace(G,u,v,level):
+    for i in range(level,G.maxLevel+1):
+        Tv = getRoot(G.F[i].H[(v,v)])
+        Tu = getRoot(G.F[i].H[(u,u)])
+        if Tv.tam < Tu.tam:
+            replace(G,v,u,level)
+            return
+        edgeList = getListEdgesOfLevel(Tu)
+        for xy in edgeList:
+            x = xy.info[0]
+            y = xy.info[1]
+            G.level[(x,y)] = i-1
+            G.level[(y,x)] = i-1
+            xy.is_level = 0
+            updateLevelToRoot(xy)
+            addEdgeDF(G.F[i-1],x,y)
+        vertexList = getListReserveNodes(Tu)
+        for xx in vertexList:
+            x = xx.info[0]
+            for y in G.R[i].AL[x]:
+                delEdgeGLA(G.R[i],x,y)
+                
+                xx.has_reserve-=1
+                updateReserveToRoot(xx)
+                
+                yy = G.F[i].H[(y,y)]
+                yy.has_reserve-=1
+                updateReserveToRoot(yy)
+                
+                if connectedDF(G.F[i],x,y):
+                    G.level[(x,y)] = i-1
+                    addEdgeGLA(G.R[i-1],x,y)
+                else:
+                    for j in range(i,G.maxLevel+1):
+                        addEdgeDF(G.F[j],x,y)
+                    return
 
