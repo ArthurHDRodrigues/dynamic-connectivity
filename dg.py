@@ -61,8 +61,8 @@ def replace(G,u,v,level):
         Tv = getRoot(G.F[i].H[(v,v)])
         Tu = getRoot(G.F[i].H[(u,u)])
         if Tv.tam < Tu.tam:
-            replace(G,v,u,level)
-            return
+            u,v = v,u
+            Tu,Tv = Tv,Tu
         edgeList = getListEdgesOfLevel(Tu)
         for xy in edgeList:
             x = xy.info[0]
@@ -75,7 +75,8 @@ def replace(G,u,v,level):
         vertexList = getListReserveNodes(Tu)
         for xx in vertexList:
             x = xx.info[0]
-            for y in G.R[i].AL[x]:
+            R = G.R[i].AL[x].copy()
+            for y in R:
                 delEdgeGLA(G.R[i],x,y)
                 
                 xx.has_reserve-=1
