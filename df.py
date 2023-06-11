@@ -50,8 +50,9 @@ def remEdgeDF(F,u,v):
     Kuv = order(uv)
     Kvu = order(vu)
     if(Kuv > Kvu):
-        remEdgeDF(F,v,u)
-        return
+        u,v = v,u
+        uv,vu=vu,uv
+        Kuv,Kvu = Kvu,Kuv
     S = getRoot(uv)
     uu = search(S,Kuv-1)
     vv = search(S,Kuv+1)
