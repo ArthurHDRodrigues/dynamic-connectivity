@@ -45,14 +45,15 @@ def connected(G,u,v):
     return connectedDF(G.F[G.maxLevel],u,v)
 
 def remEdge(G,u,v):
-    if G.F[G.maxLevel].H[(u,v)] != None:
-        for i in range(G.level[(u,v)],G.maxLevel+1):
-            remEdgeDF(G.F[i],u,v)
-        replace(G,u,v,G.level[(u,v)])
-    else:
-        remEdgeGLA(G.R[G.level[(u,v)]],u,v)
+    level = G.level[(u,v)]
     del(G.level[(u,v)])
     del(G.level[(v,u)])
+    if G.F[G.maxLevel].H[(u,v)] != None:
+        for i in range(level,G.maxLevel+1):
+            remEdgeDF(G.F[i],u,v)
+        replace(G,u,v,level)
+    else:
+        remEdgeGLA(G.R[level],u,v)
 
 
 def replace(G,u,v,level):
