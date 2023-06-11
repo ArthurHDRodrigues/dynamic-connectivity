@@ -17,12 +17,15 @@ class dynamicGraph:
             self.R.append(Ri)
 
 def printDG(G):
-    print("maxLevel  : ",G.level)
-    print("reserve   : ",getRoot(G.F[G.maxLevel].H[(1,1)]).reserve_count)
-    print("edge level: ",getRoot(G.F[G.maxLevel].H[(1,1)]).level_count)
+    print("maxLevel  : ",G.maxLevel)
+    print("R:")
+    for i in range(1,G.maxLevel+1):
+        print(i,':',G.R[i])
 
 
 def addEdge(G,u,v):
+    if (u,v) in G.level:
+        return
     G.level[(u,v)] = G.maxLevel
     G.level[(v,u)] = G.maxLevel
     if connectedDF(G.F[G.maxLevel],u,v):
