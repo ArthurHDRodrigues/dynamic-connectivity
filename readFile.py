@@ -19,7 +19,7 @@ def importFromFile(fileName,VERBOSE=0):
                 if VERBOSE:
                     print("Deleting edge (",u,",",v,")")
                 remEdge(G,u,v)
-            case 'q':
+            case '?':
                 if connected(G,u,v):
                     print("vertices ",u," and ",v," are connected")
                 else:
