@@ -1,62 +1,65 @@
-from ETT import *
+from .ETT import *
 
-class dynamicForrest:
+class dynamicForest:
     def __init__(self,n):
-        self.n = n
+        '''
+        Runs in O(n).
+        '''
         self.H = dict()
-        for i in range(1,n+1):
-            self.H[(i,i)] = treapNode((i,i))
+        for v in range(n):
+            self.H[(v,v)] = treapNode((v,v))
+
 
 def connectedDF(F,u,v):
+    '''
+    Runs in O(lg n) expected.
+    '''
     uu = F.H[(u,u)]
     vv = F.H[(v,v)]
     return getRoot(uu) == getRoot(vv)
 
 
 def makeStart(F,u):
+    '''
+    Moves uu to the front of the sequence
+    
+    Runs in O(lg n) expected.
+    '''
     uu = F.H[(u,u)]
-    T = getRoot(uu)
-    vv = search(T,1)
-    v = vv.info[0]
-    if(vv != uu):
-        F.H[(v,v)] = vv
+    o = order(uu)
+    if(o != 1):
         A,B = split(uu)
-        vv = getLast(B)
-        B,C = split(vv)
-        uu = treapNode((u,u))
-        join(join(B,A),uu)
+        return join(B,A)
+    return getRoot(uu)
 
+def addEdgeDF(F,u,v,is_level=1):
+    '''
+    It assumes that u < v
 
-def addEdgeDF(F,u,v):
-    makeStart(F,u)
-    makeStart(F,v)
-    U = getRoot(F.H[(u,u)])
-    V = getRoot(F.H[(v,v)])
-    uv = treapNode((u,v))
-    vu = treapNode((v,u))
-    uu = treapNode((u,u))
+    Runs in O(lg n) expected.
+    '''
+    U = makeStart(F,u)
+    V = makeStart(F,v)
+    uv = treapNode((u,v),is_level)
+    vu = treapNode((v,u),0)
     F.H[(u,v)] = uv
     F.H[(v,u)] = vu
-    join(join(join(join(U,uv),V),vu),uu)
+    join(join(join(U,uv),V),vu)
 
 
 def remEdgeDF(F,u,v):
+    '''
+    Runs in O(lg n) expected.
+    '''
     uv = F.H[(u,v)]
     vu = F.H[(v,u)]
     Kuv = order(uv)
     Kvu = order(vu)
     if(Kuv > Kvu):
-        remEdgeDF(F,v,u)
-        return
-    S = getRoot(uv)
-    uu = search(S,Kuv-1)
-    vv = search(S,Kuv+1)
-    A,B = split(uu) #Split in S
-    B,C = split(vv) #apply split in B
-    C,D = split(vu) #split in C
-    xx = search(D,2)
-    D,E = split(xx) #spli in D
-    F.H[(u,u)] = xx
+        uv,vu=vu,uv
+    A,B = splitByNode(uv) #Split in S
+    B,C = splitByNode(vu) #Split in S
     del(F.H[(u,v)])
     del(F.H[(v,u)])
-    join(A,E)
+    join(A,C)
+
