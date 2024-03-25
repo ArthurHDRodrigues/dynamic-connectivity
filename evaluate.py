@@ -119,6 +119,9 @@ if __name__ == '__main__':
     HK_sum_small_size = 0
     HK_sum_beta = 0
 
+    HDT_sum_small_size = 0
+    HDT_sum_beta = 0
+    
     # while current_time <= end_timestamp + survival_time:
     while current_time <= test_points[-1]:
         # loop records and start with the record with current_time
@@ -550,15 +553,17 @@ if __name__ == '__main__':
             output_average_dist_by_method(Dtree_accumulated_dist, count_snapshot, testcase, 'Dtree')
             output_average_dist_by_method(nDtree_accumulated_dist, count_snapshot, testcase, 'nDtree')
             output_average_dist_by_method(HK_accumulated_dist, count_snapshot, testcase, 'HK')
-            #output_average_dist_by_method(HDT_accumulated_dist, count_snapshot, testcase, 'HDT')
+            output_average_dist_by_method(HDT_accumulated_dist, count_snapshot, testcase, 'HDT')
 
             update_res_query_Sd(testcase, 'query', [current_time, query_Dtree], 'Dtree')
             update_res_query_Sd(testcase, 'query', [current_time, query_nDtree], 'nDtree')
             update_res_query_Sd(testcase, 'query', [current_time, query_HK], 'HK')
+            update_res_query_Sd(testcase, 'query', [current_time, query_HDT], 'HDT')
 
             update_res_query_Sd(testcase, 'Sd', [current_time, Dtree_Sd], 'Dtree')
             update_res_query_Sd(testcase, 'Sd', [current_time, nDtree_Sd], 'nDtree')
             update_res_query_Sd(testcase, 'Sd', [current_time, HK_Sd], 'HK')
+            update_res_query_Sd(testcase, 'Sd', [current_time, HDT_Sd], 'HDT')
 
             #update_maintanence(testcase, Dtree_res, 'Dtree')
             #update_maintanence(testcase, nDtree_res, 'nDtree')
@@ -570,7 +575,8 @@ if __name__ == '__main__':
 
             update_average_distance(testcase, [current_time, Dtree_Sd / (len(v_set) + 0.000001)], 'Dtree')
             update_average_distance(testcase, [current_time, nDtree_Sd / (len(v_set) + 0.000001)], 'nDtree')
-            #update_average_distance(testcase, [current_time, HK_Sd / (len(v_set) + 0.000001)], 'HK')
+            update_average_distance(testcase, [current_time, HK_Sd / (len(v_set) + 0.000001)], 'HK')
+            update_average_distance(testcase, [current_time, HDT_Sd / (len(v_set) + 0.000001)], 'HDT')
             print("Average distance:",
                    HDT_Sd / (len(v_set) + 0.000001),
                    Dtree_Sd / (len(v_set) + 0.000001),
@@ -589,6 +595,8 @@ if __name__ == '__main__':
                                             nDtree_sum_small_size/(nDtree_res.de_te_count + 0.000001)], 'nDtree')
             update_average_uneven_size_beta(testcase, 'uneven', [current_time,
                                             HK_sum_small_size/(HK_res.de_te_count + 0.000001)], 'HK')
+            update_average_uneven_size_beta(testcase, 'uneven', [current_time,
+                                            HDT_sum_small_size/(HDT_res.de_te_count + 0.000001)], 'HDT')
 
             update_average_uneven_size_beta(testcase, 'beta', [current_time,
                                             Dtree_sum_beta/(Dtree_res.de_te_count + 0.000001)], 'Dtree')
@@ -596,6 +604,8 @@ if __name__ == '__main__':
                                             nDtree_sum_beta/(nDtree_res.de_te_count + 0.000001)], 'nDtree')
             update_average_uneven_size_beta(testcase, 'beta', [current_time,
                                             HK_sum_beta/(HK_res.de_te_count + 0.000001)], 'HK')
+            update_average_uneven_size_beta(testcase, 'beta', [current_time,
+                                            HDT_sum_beta/(HDT_res.de_te_count + 0.000001)], 'HDT')
 
             # results for updates
             # inserting tree edges
@@ -611,10 +621,10 @@ if __name__ == '__main__':
                                    "insertion_te",
                                    [current_time, (HK_res.in_te_time - HK_res_pre.in_te_time) /
                                     (HK_res.in_te_count - HK_res_pre.in_te_count + 0.00001)], 'HK')
-            #update_average_runtime(testcase,
-            #                       "insertion_te",
-            #                       [current_time, (HDT_res.in_te_time - HDT_res_pre.in_te_time) /
-            #                        (HDT_res.in_te_count - HDT_res_pre.in_te_count + 0.00001)], 'HDT')
+            update_average_runtime(testcase,
+                                   "insertion_te",
+                                   [current_time, (HDT_res.in_te_time - HDT_res_pre.in_te_time) /
+                                    (HDT_res.in_te_count - HDT_res_pre.in_te_count + 0.00001)], 'HDT')
 
 
             # inserting non-tree edges
@@ -630,10 +640,10 @@ if __name__ == '__main__':
                                    "insertion_nte",
                                    [current_time, (HK_res.in_nte_time - HK_res_pre.in_nte_time) /
                                     (HK_res.in_nte_count - HK_res_pre.in_nte_count + 0.00001)], 'HK')
-            #update_average_runtime(testcase,
-            #                       "insertion_nte",
-            #                       [current_time, (HDT_res.in_nte_time - HDT_res_pre.in_nte_time) /
-            #                        (HDT_res.in_nte_count - HDT_res_pre.in_nte_count + 0.00001)], 'HDT')
+            update_average_runtime(testcase,
+                                   "insertion_nte",
+                                   [current_time, (HDT_res.in_nte_time - HDT_res_pre.in_nte_time) /
+                                    (HDT_res.in_nte_count - HDT_res_pre.in_nte_count + 0.00001)], 'HDT')
 
             # deleting tree edges
             update_average_runtime(testcase,
@@ -648,10 +658,10 @@ if __name__ == '__main__':
                                    "deletion_te",
                                    [current_time, (HK_res.de_te_time - HK_res_pre.de_te_time) /
                                     (HK_res.de_te_count - HK_res_pre.de_te_count + 0.00001)], 'HK')
-            #update_average_runtime(testcase,
-            #                       "deletion_te",
-            #                       [current_time, (HDT_res.de_te_time - HDT_res_pre.de_te_time) /
-            #                        (HDT_res.de_te_count - HDT_res_pre.de_te_count + 0.00001)], 'HDT')
+            update_average_runtime(testcase,
+                                   "deletion_te",
+                                   [current_time, (HDT_res.de_te_time - HDT_res_pre.de_te_time) /
+                                    (HDT_res.de_te_count - HDT_res_pre.de_te_count + 0.00001)], 'HDT')
 
             # deleting non-tree edges
             update_average_runtime(testcase,
@@ -666,70 +676,70 @@ if __name__ == '__main__':
                                    "deletion_nte",
                                    [current_time, (HK_res.de_nte_time - HK_res_pre.de_nte_time) /
                                     (HK_res.de_nte_count - HK_res_pre.de_nte_count + 0.00001)], 'HK')
-            #update_average_runtime(testcase,
-            #                       "deletion_nte",
-            #                       [current_time, (HDT_res.de_nte_time - HDT_res_pre.de_nte_time) /
-            #                        (HDT_res.de_nte_count - HDT_res_pre.de_nte_count + 0.00001)], 'HDT')
+            update_average_runtime(testcase,
+                                   "deletion_nte",
+                                   [current_time, (HDT_res.de_nte_time - HDT_res_pre.de_nte_time) /
+                                    (HDT_res.de_nte_count - HDT_res_pre.de_nte_count + 0.00001)], 'HDT')
 
             copyRes(Dtree_res, Dtree_res_pre)
             copyRes(nDtree_res, nDtree_res_pre)
             copyRes(HK_res, HK_res_pre)
             copyRes(HDT_res, HDT_res_pre)
 
-            if isSmallGraph:
-                output_average_dist_by_method(ET_accumulated_dist, count_snapshot, testcase, 'ET')
+            #if isSmallGraph:
+                #output_average_dist_by_method(ET_accumulated_dist, count_snapshot, testcase, 'ET')
                 #output_average_dist_by_method(opt_accumulated_dist, count_snapshot, testcase, 'opt')
 
-                update_res_query_Sd(testcase, 'query', [current_time, query_ET], 'ET')
+                #update_res_query_Sd(testcase, 'query', [current_time, query_ET], 'ET')
 
-                update_res_query_Sd(testcase, 'Sd', [current_time, ET_Sd], 'ET')
+                #update_res_query_Sd(testcase, 'Sd', [current_time, ET_Sd], 'ET')
 
                 #update_maintanence(testcase, ET_res, 'ET')
 
-                update_average_distance(testcase, [current_time, ET_Sd / (len(v_set) + 0.000001)], 'ET')
-                update_average_distance(testcase, [current_time, opt_Sd / (len(v_set) + 0.000001)], 'opt')
+                #update_average_distance(testcase, [current_time, ET_Sd / (len(v_set) + 0.000001)], 'ET')
+                #update_average_distance(testcase, [current_time, opt_Sd / (len(v_set) + 0.000001)], 'opt')
 
                 # inserting tree edges
-                update_average_runtime(testcase,
-                                       "insertion_te",
-                                       [current_time, (ET_res.in_te_time - ET_res_pre.in_te_time) /
-                                        (ET_res.in_te_count - ET_res_pre.in_te_count + 0.00001)], 'ET')
+                #update_average_runtime(testcase,
+                #                       "insertion_te",
+                #                       [current_time, (ET_res.in_te_time - ET_res_pre.in_te_time) /
+                #                        (ET_res.in_te_count - ET_res_pre.in_te_count + 0.00001)], 'ET')
                 #update_average_runtime(testcase,
                 #                       "insertion_te",
                 #                       [current_time, (opt_res.in_te_time - opt_res_pre.in_te_time) /
                 #                        (opt_res.in_te_count - opt_res_pre.in_te_count + 0.00001)], 'opt')
 
                 # inserting non-tree edges
-                update_average_runtime(testcase,
-                                       "insertion_nte",
-                                       [current_time, (ET_res.in_nte_time - ET_res_pre.in_nte_time) /
-                                        (ET_res.in_nte_count - ET_res_pre.in_nte_count + 0.00001)], 'ET')
+                #update_average_runtime(testcase,
+                #                       "insertion_nte",
+                #                       [current_time, (ET_res.in_nte_time - ET_res_pre.in_nte_time) /
+                #                        (ET_res.in_nte_count - ET_res_pre.in_nte_count + 0.00001)], 'ET')
                 #update_average_runtime(testcase,
                 #                       "insertion_nte",
                 #                       [current_time, (opt_res.in_nte_time - opt_res_pre.in_nte_time) /
                 #                        (opt_res.in_nte_count - opt_res_pre.in_nte_count + 0.00001)], 'opt')
 
                 # deleting tree edges
-                update_average_runtime(testcase,
-                                       "deletion_te",
-                                       [current_time, (ET_res.de_te_time - ET_res_pre.de_te_time) /
-                                        (ET_res.de_te_count - ET_res_pre.de_te_count + 0.00001)], 'ET')
+                #update_average_runtime(testcase,
+                #                       "deletion_te",
+                #                       [current_time, (ET_res.de_te_time - ET_res_pre.de_te_time) /
+                #                        (ET_res.de_te_count - ET_res_pre.de_te_count + 0.00001)], 'ET')
                 #update_average_runtime(testcase,
                 #                       "deletion_te",
                 #                       [current_time, (opt_res.de_te_time - opt_res_pre.de_te_time) /
                 #                        (opt_res.de_te_count - opt_res_pre.de_te_count + 0.00001)], 'opt')
 
                 # deleting non-tree edges
-                update_average_runtime(testcase,
-                                       "deletion_nte",
-                                       [current_time, (ET_res.de_nte_time - ET_res_pre.de_nte_time) /
-                                        (ET_res.de_nte_count - ET_res_pre.de_nte_count + 0.00001)], 'ET')
+                #update_average_runtime(testcase,
+                #                       "deletion_nte",
+                #                       [current_time, (ET_res.de_nte_time - ET_res_pre.de_nte_time) /
+                #                        (ET_res.de_nte_count - ET_res_pre.de_nte_count + 0.00001)], 'ET')
                 #update_average_runtime(testcase,
                 #                       "deletion_nte",
                 #                       [current_time, (opt_res.de_nte_time - opt_res_pre.de_nte_time) /
                 #                        (opt_res.de_nte_count - opt_res_pre.de_nte_count + 0.00001)], 'opt')
 
-                copyRes(ET_res, ET_res_pre)
+                #copyRes(ET_res, ET_res_pre)
 
     print("# of total updates: %d." %(Dtree_res.in_nte_count + Dtree_res.in_te_count +
                                  Dtree_res.de_nte_count + Dtree_res.de_te_count))
