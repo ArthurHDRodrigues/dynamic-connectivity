@@ -1,4 +1,6 @@
 from .ETT import *
+import sys
+import random
 
 class dynamicForest:
     def __init__(self,n):
@@ -7,7 +9,7 @@ class dynamicForest:
         '''
         self.H = dict()
         for v in range(n):
-            self.H[(v,v)] = treapNode((v,v))
+            self.H[(v,v)] = treapNode((v,v), random.randint(0,sys.maxsize))
 
 
 def connectedDF(F,u,v):
@@ -40,8 +42,8 @@ def addEdgeDF(F,u,v,is_level=1):
     '''
     U = makeStart(F,u)
     V = makeStart(F,v)
-    uv = treapNode((u,v),is_level)
-    vu = treapNode((v,u),0)
+    uv = treapNode((u,v),random.randint(0,sys.maxsize),is_level)
+    vu = treapNode((v,u),random.randint(0,sys.maxsize),0)
     F.H[(u,v)] = uv
     F.H[(v,u)] = vu
     join(join(join(U,uv),V),vu)

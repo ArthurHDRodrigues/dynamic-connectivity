@@ -1,5 +1,3 @@
-import random 
-import sys
 
 '''
 When describing the time complexity of the follownig
@@ -7,14 +5,14 @@ functions, let n be the number of nodes in the treap.
 '''
 
 class treapNode:
-    def __init__(self, v, is_level=0):
+    def __init__(self, v, prio, is_level=0):
         '''
         Runs in O(1).
         '''
         self.parent = None
         self.left = None
         self.right = None
-        self.prio = random.randint(0,sys.maxsize)
+        self.prio = prio
         self.info = v
         self.size = 1
         self.reserve_degree_count = 0

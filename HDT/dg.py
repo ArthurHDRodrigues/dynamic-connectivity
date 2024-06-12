@@ -1,6 +1,5 @@
 from math import log2,ceil
 from .df import *
-from .ETT import *
 
 
 #HDTlog = open("logs/HDT_operations.log","w")
