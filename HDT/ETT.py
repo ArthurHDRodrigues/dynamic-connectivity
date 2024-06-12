@@ -39,19 +39,34 @@ def printSequence(treap):
     '''
     Runs in O(n).
     '''
-    printSequenceRecursive(treap)
+    printSequenceRecursive(treap,0)
     print("") #print newline
-    print(treap.reserve_degree_count)
-    print(treap.level_count)
 
-def printSequenceRecursive(treap):
+def printSequenceRecursive(treap,i):
     '''
     Runs in O(n).
     '''
     if(treap):
-        printSequenceRecursive(treap.left)
-        print(treap.info,end='')
-        rintSequenceRecursive(treap.right)
+        printSequenceRecursive(treap.left,i+1)
+        print(3*i*' ',treap.info,treap.prio)
+        printSequenceRecursive(treap.right,i+1)
+
+
+def printSequenceHK(treap):
+    '''
+    Runs in O(n).
+    '''
+    printSequenceRecursiveHK(treap,0)
+    print("") #print newline
+
+def printSequenceRecursiveHK(treap,i):
+    '''
+    Runs in O(n).
+    '''
+    if(treap):
+        printSequenceRecursiveHK(treap.left,i+1)
+        print(3*i*' ',treap.val,treap.priority)
+        printSequenceRecursiveHK(treap.right,i+1)
 
 ################################
 #  Methods get info from treaps
@@ -334,3 +349,15 @@ def splitByNode(node):
     if(L != None): L.parent = None
     if (R != None): R.parent = None
     return L,R
+
+def valid_randomized_BST(root):
+    if root is None:
+        return True
+
+    if root.left is not None and root.prio < root.left.prio:
+        return False
+
+    if root.right is not None and root.prio < root.right.prio:
+        return False
+
+    return valid_randomized_BST(root.left) & valid_randomized_BST(root.right)
