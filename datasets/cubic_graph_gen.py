@@ -7,8 +7,8 @@ import networkx as nwx
 file = open("cubic","w")
 T = 0 # Variable for Time Stamp
 
-N = 200
-S = 1000000
+N = 20
+S = 100
 
 
 # Current set of edges
@@ -74,9 +74,10 @@ for e in G.edges:
     T+=1
     
 
+file.write(f"p,{u},{v},{T}\n")
 
 #T = genCubic(N, T)
 
-crossEdges(G, S, T)
+#crossEdges(G, S, T)
 
 file.close()
