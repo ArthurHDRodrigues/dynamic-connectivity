@@ -418,11 +418,22 @@ if __name__ == '__main__':
                         ET_res.de_te_time += (timer() - start)
                     if sanity_check and tree_utils.query(a, b, ET_active_occurrence_dict) != tree_utils.query(a, b, HK_active_occurrence_dict):
                         raise ValueError("Error in insertion in opt")
+            elif records[idx][3] == 'p':
+                root_HDT = dg.getRoot(HDT_graph.F[HDT_graph.maxLevel].H[(0,0)])
+                dg.printSequence(root_HDT)
+                print("Número de nós em HDT:", root_HDT.size)
+                root_HK, distance_a = tree_utils.find_root_with_steps(HK_active_occurrence_dict[0])
+                dg.printSequenceHK(root_HK)
+                print("Número de nós em HK:", root_HK.size)
             idx += 1
 
         current_time += 1
         if current_time in test_points:
             # output to terminal
+
+            
+
+          
             print("timestamp:%d" % current_time)
             insertion_nte_data = list()
             insertion_nte_data.append(["HDT", HDT_res.in_nte_count, HDT_res.in_nte_time])
