@@ -71,8 +71,8 @@ if __name__ == '__main__':
     _, Dtree = Dtree_utils.construct_BFS_tree(graph, 0, non_tree_edges)
     _, nDtree = Dtree_utils.construct_BFS_tree(graph, 0, non_tree_edges)
 
-    ET_forest, ET_tree_edges, ET_non_tree_edges, ET_active_occurrence_dict, ET_tree_edges_pointers = \
-        ET_utils.ET_constructSF(graph, 0, max_priority)
+    #ET_forest, ET_tree_edges, ET_non_tree_edges, ET_active_occurrence_dict, ET_tree_edges_pointers = \
+    #    ET_utils.ET_constructSF(graph, 0, max_priority)
     HK_forest, HK_tree_edges, HK_non_tree_edges, HK_active_occurrence_dict, HK_tree_edges_pointers = \
         HK_utils.HK_constructSF(graph, 0, max_priority)
 
@@ -81,14 +81,14 @@ if __name__ == '__main__':
     expiredDict = defaultdict(set)
     inserted_edge = defaultdict()
 
-    ET_res = Res()
+    #ET_res = Res()
     HK_res = Res()
     nDtree_res = Res()
     Dtree_res = Res()
     HDT_res = Res()
 
     # results in previous test point
-    ET_res_pre = Res()
+    #ET_res_pre = Res()
     HK_res_pre = Res()
     nDtree_res_pre = Res()
     Dtree_res_pre = Res()
@@ -98,7 +98,7 @@ if __name__ == '__main__':
     Dtree_accumulated_dist = defaultdict(int)
     nDtree_accumulated_dist = defaultdict(int)
     HK_accumulated_dist = defaultdict(int)
-    ET_accumulated_dist = defaultdict(int)
+    #ET_accumulated_dist = defaultdict(int)
     HDT_accumulated_dist = defaultdict(int)
 
 
@@ -280,6 +280,7 @@ if __name__ == '__main__':
 
 
 
+            '''
             if isSmallGraph:  # evaluations on small graphs
                 # ET
                 # only evaluate ET-tree for small graphs, since it is very inefficient for large graphs
@@ -320,6 +321,7 @@ if __name__ == '__main__':
                 if sanity_check and tree_utils.query(a, b, ET_active_occurrence_dict) != \
                         tree_utils.query(a, b, HK_active_occurrence_dict):
                     raise ValueError("Error in insertion")
+            '''
 
         if current_time in expiredDict:
 
@@ -402,6 +404,7 @@ if __name__ == '__main__':
                         print(Dtree[b].size, nDtree[b].size)
                     assert Dtree[b].size == nDtree[b].size
 
+                '''
                 # evaluate ET-tree and opt on small graphs
                 if isSmallGraph:
                     # ET
@@ -419,6 +422,7 @@ if __name__ == '__main__':
                         ET_res.de_te_time += (timer() - start)
                     if sanity_check and tree_utils.query(a, b, ET_active_occurrence_dict) != tree_utils.query(a, b, HK_active_occurrence_dict):
                         raise ValueError("Error in insertion in opt")
+                '''
 
 
             del expiredDict[current_time]
@@ -431,8 +435,8 @@ if __name__ == '__main__':
             insertion_nte_data.append(["Dtree", Dtree_res.in_nte_count, Dtree_res.in_nte_time])
             insertion_nte_data.append(["nDtree", nDtree_res.in_nte_count, nDtree_res.in_nte_time])
             insertion_nte_data.append(["HK", HK_res.in_nte_count, HK_res.in_nte_time])
-            if isSmallGraph:
-                insertion_nte_data.append(["ET", ET_res.in_nte_count, ET_res.in_nte_time])
+            #if isSmallGraph:
+            #    insertion_nte_data.append(["ET", ET_res.in_nte_count, ET_res.in_nte_time])
             printRes("inserting non tree edge", insertion_nte_data)
             print()
 
@@ -441,8 +445,8 @@ if __name__ == '__main__':
             insertion_te_data.append(["Dtree", Dtree_res.in_te_count, Dtree_res.in_te_time])
             insertion_te_data.append(["nDtree", nDtree_res.in_te_count, nDtree_res.in_te_time])
             insertion_te_data.append(["HK", HK_res.in_te_count, HK_res.in_te_time])
-            if isSmallGraph:
-                insertion_te_data.append(["ET", ET_res.in_te_count, ET_res.in_te_time])
+            #if isSmallGraph:
+            #    insertion_te_data.append(["ET", ET_res.in_te_count, ET_res.in_te_time])
             printRes("inserting tree edge", insertion_te_data)
             print()
 
@@ -451,8 +455,8 @@ if __name__ == '__main__':
             deletion_nte_data.append(["Dtree", Dtree_res.de_nte_count, Dtree_res.de_nte_time])
             deletion_nte_data.append(["nDtree", nDtree_res.de_nte_count, nDtree_res.de_nte_time])
             deletion_nte_data.append(["HK", HK_res.de_nte_count, HK_res.de_nte_time])
-            if isSmallGraph:
-                deletion_nte_data.append(["ET", ET_res.de_nte_count, ET_res.de_nte_time])
+            #if isSmallGraph:
+            #    deletion_nte_data.append(["ET", ET_res.de_nte_count, ET_res.de_nte_time])
             printRes("deleting non tree edge", deletion_nte_data)
             print()
 
@@ -461,13 +465,13 @@ if __name__ == '__main__':
             deletion_te_data.append(["Dtree", Dtree_res.de_te_count, Dtree_res.de_te_time])
             deletion_te_data.append(["nDtree", nDtree_res.de_te_count, nDtree_res.de_te_time])
             deletion_te_data.append(["HK", HK_res.de_te_count, HK_res.de_te_time])
-            if isSmallGraph:
-                deletion_te_data.append(["ET", ET_res.de_te_count, ET_res.de_te_time])
+            #if isSmallGraph:
+            #    deletion_te_data.append(["ET", ET_res.de_te_count, ET_res.de_te_time])
             printRes("deleting tree edge", deletion_te_data)
             print()
 
             # first get the distance to root. Then calculate Sd and accumulated Sd for all snapshots.
-            ET_Sd = 0
+            #ET_Sd = 0
             HK_Sd = 0
             HDT_Sd = 0
             opt_Sd = 0
@@ -490,10 +494,10 @@ if __name__ == '__main__':
                 HDT_Sd += HDT_d
                 HDT_accumulated_dist[HDT_d] += 1
 
-                if isSmallGraph:
-                    ET_d = tree_utils.toRoot(ET_active_occurrence_dict[v])
-                    ET_Sd += ET_d
-                    ET_accumulated_dist[ET_d] += 1
+                #if isSmallGraph:
+                #    ET_d = tree_utils.toRoot(ET_active_occurrence_dict[v])
+                #    ET_Sd += ET_d
+                #    ET_accumulated_dist[ET_d] += 1
 
             # evaluate query performance
             # v_list = list(v_set)
@@ -520,12 +524,14 @@ if __name__ == '__main__':
                 dg.connectedDF(HDT_graph.F[HDT_graph.maxLevel], x, y)
             query_HDT = timer() - start
 
+            '''
             query_ET = 0
             if isSmallGraph:
                 start = timer()
                 for (x, y) in test_edges:
                     tree_utils.query(x, y, ET_active_occurrence_dict)
                 query_ET = timer() - start
+            '''
 
 
             if isSmallGraph:
@@ -541,8 +547,8 @@ if __name__ == '__main__':
             query_data.append(["HK", query_output_text, query_HK])
 
 
-            if isSmallGraph:
-                query_data.append(["ET", query_output_text, query_ET])
+            #if isSmallGraph:
+            #    query_data.append(["ET", query_output_text, query_ET])
 
 
             printRes("connectivity query", query_data)
@@ -583,10 +589,10 @@ if __name__ == '__main__':
                    HK_Sd / (len(v_set) + 0.000001),
                    nDtree_Sd / (len(v_set) + 0.000001),end=' '
                  )
-            if isSmallGraph:
-                print(ET_Sd / (len(v_set) + 0.000001))
-            else:
-                print("")
+            #if isSmallGraph:
+            #    print(ET_Sd / (len(v_set) + 0.000001))
+            #else:
+            print("")
 
 
             update_average_uneven_size_beta(testcase, 'uneven', [current_time,
