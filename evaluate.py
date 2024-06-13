@@ -69,7 +69,7 @@ if __name__ == '__main__':
     spanningtree, tree_edges, non_tree_edges = constructST_adjacency_list(graph, 0)
 
     _, Dtree = Dtree_utils.construct_BFS_tree(graph, 0, non_tree_edges)
-    _, nDtree = Dtree_utils.construct_BFS_tree(graph, 0, non_tree_edges)
+    #_, nDtree = Dtree_utils.construct_BFS_tree(graph, 0, non_tree_edges)
 
     #ET_forest, ET_tree_edges, ET_non_tree_edges, ET_active_occurrence_dict, ET_tree_edges_pointers = \
     #    ET_utils.ET_constructSF(graph, 0, max_priority)
@@ -83,20 +83,20 @@ if __name__ == '__main__':
 
     #ET_res = Res()
     HK_res = Res()
-    nDtree_res = Res()
+    #nDtree_res = Res()
     Dtree_res = Res()
     HDT_res = Res()
 
     # results in previous test point
     #ET_res_pre = Res()
     HK_res_pre = Res()
-    nDtree_res_pre = Res()
+    #nDtree_res_pre = Res()
     Dtree_res_pre = Res()
     HDT_res_pre = Res()
 
     # distribution of distance between root and nodes
     Dtree_accumulated_dist = defaultdict(int)
-    nDtree_accumulated_dist = defaultdict(int)
+    #nDtree_accumulated_dist = defaultdict(int)
     HK_accumulated_dist = defaultdict(int)
     #ET_accumulated_dist = defaultdict(int)
     HDT_accumulated_dist = defaultdict(int)
@@ -113,8 +113,8 @@ if __name__ == '__main__':
     Dtree_sum_small_size = 0
     Dtree_sum_beta = 0
 
-    nDtree_sum_small_size = 0
-    nDtree_sum_beta = 0
+    #nDtree_sum_small_size = 0
+    #nDtree_sum_beta = 0
 
     HK_sum_small_size = 0
     HK_sum_beta = 0
@@ -186,6 +186,7 @@ if __name__ == '__main__':
                     HK_res.in_nte_time += (timer() - start + go_to_root_HK)
 
             # nDtree, naive Dtree
+            '''
             if a not in nDtree:
                 nDtree[a] = DTNode(a)
             if b not in nDtree:
@@ -216,6 +217,7 @@ if __name__ == '__main__':
 
             if sanity_check and Dtree_utils.query_simple(nDtree[a], nDtree[b]) != tree_utils.query(a, b, HK_active_occurrence_dict):
                 raise ValueError("Error in insertion")
+            '''
 
             # Dtree
             if a not in Dtree:
@@ -344,6 +346,7 @@ if __name__ == '__main__':
                     HK_sum_beta += beta
 
                 # nDtree, naive Dtree
+                '''
                 if nDtree[a] in nDtree[b].nte or nDtree[b] in nDtree[a].nte:
                     nDtree_res.de_nte_count += 1
                     start = timer()
@@ -360,6 +363,7 @@ if __name__ == '__main__':
 
                 if sanity_check and Dtree_utils.query_simple(nDtree[a], nDtree[b]) != tree_utils.query(a, b, HK_active_occurrence_dict):
                     raise ValueError("Error in deletion")
+                '''
 
                 # Dtree
                 if Dtree[a] in Dtree[b].nte or Dtree[b] in Dtree[a].nte:
@@ -395,14 +399,14 @@ if __name__ == '__main__':
                 # remove isolated nodes from v_set.
                 if Dtree[a].parent is None and Dtree[a].size == 1:
                     v_set.remove(a)
-                    if Dtree[a].size != nDtree[a].size:
-                        print(Dtree[a].size, nDtree[a].size)
-                    assert Dtree[a].size == nDtree[a].size
+                    #if Dtree[a].size != nDtree[a].size:
+                    #    print(Dtree[a].size, nDtree[a].size)
+                    #assert Dtree[a].size == nDtree[a].size
                 if Dtree[b].parent is None and Dtree[b].size == 1:
                     v_set.remove(b)
-                    if Dtree[b].size != nDtree[b].size:
-                        print(Dtree[b].size, nDtree[b].size)
-                    assert Dtree[b].size == nDtree[b].size
+                    #if Dtree[b].size != nDtree[b].size:
+                    #    print(Dtree[b].size, nDtree[b].size)
+                    #assert Dtree[b].size == nDtree[b].size
 
                 '''
                 # evaluate ET-tree and opt on small graphs
@@ -433,7 +437,7 @@ if __name__ == '__main__':
             insertion_nte_data = list()
             insertion_nte_data.append(["HDT", HDT_res.in_nte_count, HDT_res.in_nte_time])
             insertion_nte_data.append(["Dtree", Dtree_res.in_nte_count, Dtree_res.in_nte_time])
-            insertion_nte_data.append(["nDtree", nDtree_res.in_nte_count, nDtree_res.in_nte_time])
+            #insertion_nte_data.append(["nDtree", nDtree_res.in_nte_count, nDtree_res.in_nte_time])
             insertion_nte_data.append(["HK", HK_res.in_nte_count, HK_res.in_nte_time])
             #if isSmallGraph:
             #    insertion_nte_data.append(["ET", ET_res.in_nte_count, ET_res.in_nte_time])
@@ -443,7 +447,7 @@ if __name__ == '__main__':
             insertion_te_data = list()
             insertion_te_data.append(["HDT", HDT_res.in_te_count, HDT_res.in_te_time])
             insertion_te_data.append(["Dtree", Dtree_res.in_te_count, Dtree_res.in_te_time])
-            insertion_te_data.append(["nDtree", nDtree_res.in_te_count, nDtree_res.in_te_time])
+            #insertion_te_data.append(["nDtree", nDtree_res.in_te_count, nDtree_res.in_te_time])
             insertion_te_data.append(["HK", HK_res.in_te_count, HK_res.in_te_time])
             #if isSmallGraph:
             #    insertion_te_data.append(["ET", ET_res.in_te_count, ET_res.in_te_time])
@@ -453,7 +457,7 @@ if __name__ == '__main__':
             deletion_nte_data = list()
             deletion_nte_data.append(["HDT", HDT_res.de_nte_count, HDT_res.de_nte_time])
             deletion_nte_data.append(["Dtree", Dtree_res.de_nte_count, Dtree_res.de_nte_time])
-            deletion_nte_data.append(["nDtree", nDtree_res.de_nte_count, nDtree_res.de_nte_time])
+            #deletion_nte_data.append(["nDtree", nDtree_res.de_nte_count, nDtree_res.de_nte_time])
             deletion_nte_data.append(["HK", HK_res.de_nte_count, HK_res.de_nte_time])
             #if isSmallGraph:
             #    deletion_nte_data.append(["ET", ET_res.de_nte_count, ET_res.de_nte_time])
@@ -463,7 +467,7 @@ if __name__ == '__main__':
             deletion_te_data = list()
             deletion_te_data.append(["HDT", HDT_res.de_te_count, HDT_res.de_te_time])
             deletion_te_data.append(["Dtree", Dtree_res.de_te_count, Dtree_res.de_te_time])
-            deletion_te_data.append(["nDtree", nDtree_res.de_te_count, nDtree_res.de_te_time])
+            #deletion_te_data.append(["nDtree", nDtree_res.de_te_count, nDtree_res.de_te_time])
             deletion_te_data.append(["HK", HK_res.de_te_count, HK_res.de_te_time])
             #if isSmallGraph:
             #    deletion_te_data.append(["ET", ET_res.de_te_count, ET_res.de_te_time])
@@ -476,15 +480,15 @@ if __name__ == '__main__':
             HDT_Sd = 0
             opt_Sd = 0
             Dtree_Sd = 0
-            nDtree_Sd = 0
+            #nDtree_Sd = 0
             for v in v_set:
                 Dtree_d = Dtree_utils.toRoot(Dtree[v])
                 Dtree_Sd += Dtree_d
                 Dtree_accumulated_dist[Dtree_d] += 1
 
-                nDtree_d = Dtree_utils.toRoot(nDtree[v])
-                nDtree_Sd += nDtree_d
-                nDtree_accumulated_dist[nDtree_d] += 1
+                #nDtree_d = Dtree_utils.toRoot(nDtree[v])
+                #nDtree_Sd += nDtree_d
+                #nDtree_accumulated_dist[nDtree_d] += 1
 
                 HK_d = tree_utils.toRoot(HK_active_occurrence_dict[v])
                 HK_Sd += HK_d
@@ -503,10 +507,12 @@ if __name__ == '__main__':
             # v_list = list(v_set)
             test_edges = generatePairs(v_set)
 
+            '''
             start = timer()
             for (x, y) in test_edges:
                 Dtree_utils.query_simple(nDtree[x], nDtree[y])
             query_nDtree = timer() - start
+            '''
 
             start = timer()
             for (x, y) in test_edges:
@@ -543,7 +549,7 @@ if __name__ == '__main__':
             query_data = []
             query_data.append(["HDT", query_output_text, query_HDT])
             query_data.append(["Dtree", query_output_text, query_Dtree])
-            query_data.append(["nDtree", query_output_text, query_nDtree])
+            #query_data.append(["nDtree", query_output_text, query_nDtree])
             query_data.append(["HK", query_output_text, query_HK])
 
 
@@ -557,17 +563,17 @@ if __name__ == '__main__':
             # output results to file
             count_snapshot += 1
             output_average_dist_by_method(Dtree_accumulated_dist, count_snapshot, testcase, 'Dtree')
-            output_average_dist_by_method(nDtree_accumulated_dist, count_snapshot, testcase, 'nDtree')
+            #output_average_dist_by_method(nDtree_accumulated_dist, count_snapshot, testcase, 'nDtree')
             output_average_dist_by_method(HK_accumulated_dist, count_snapshot, testcase, 'HK')
             output_average_dist_by_method(HDT_accumulated_dist, count_snapshot, testcase, 'HDT')
 
             update_res_query_Sd(testcase, 'query', [current_time, query_Dtree], 'Dtree')
-            update_res_query_Sd(testcase, 'query', [current_time, query_nDtree], 'nDtree')
+            #update_res_query_Sd(testcase, 'query', [current_time, query_nDtree], 'nDtree')
             update_res_query_Sd(testcase, 'query', [current_time, query_HK], 'HK')
             update_res_query_Sd(testcase, 'query', [current_time, query_HDT], 'HDT')
 
             update_res_query_Sd(testcase, 'Sd', [current_time, Dtree_Sd], 'Dtree')
-            update_res_query_Sd(testcase, 'Sd', [current_time, nDtree_Sd], 'nDtree')
+            #update_res_query_Sd(testcase, 'Sd', [current_time, nDtree_Sd], 'nDtree')
             update_res_query_Sd(testcase, 'Sd', [current_time, HK_Sd], 'HK')
             update_res_query_Sd(testcase, 'Sd', [current_time, HDT_Sd], 'HDT')
 
@@ -580,14 +586,15 @@ if __name__ == '__main__':
             update_res_vertices_edges(testcase, 'edges', [current_time, edges_num])
 
             update_average_distance(testcase, [current_time, Dtree_Sd / (len(v_set) + 0.000001)], 'Dtree')
-            update_average_distance(testcase, [current_time, nDtree_Sd / (len(v_set) + 0.000001)], 'nDtree')
+            #update_average_distance(testcase, [current_time, nDtree_Sd / (len(v_set) + 0.000001)], 'nDtree')
             update_average_distance(testcase, [current_time, HK_Sd / (len(v_set) + 0.000001)], 'HK')
             update_average_distance(testcase, [current_time, HDT_Sd / (len(v_set) + 0.000001)], 'HDT')
             print("Average distance:",
                    HDT_Sd / (len(v_set) + 0.000001),
                    Dtree_Sd / (len(v_set) + 0.000001),
                    HK_Sd / (len(v_set) + 0.000001),
-                   nDtree_Sd / (len(v_set) + 0.000001),end=' '
+                   #nDtree_Sd / (len(v_set) + 0.000001),
+                   end=' '
                  )
             #if isSmallGraph:
             #    print(ET_Sd / (len(v_set) + 0.000001))
@@ -597,8 +604,8 @@ if __name__ == '__main__':
 
             update_average_uneven_size_beta(testcase, 'uneven', [current_time,
                                             Dtree_sum_small_size/(Dtree_res.de_te_count + 0.000001)], 'Dtree')
-            update_average_uneven_size_beta(testcase, 'uneven', [current_time,
-                                            nDtree_sum_small_size/(nDtree_res.de_te_count + 0.000001)], 'nDtree')
+            #update_average_uneven_size_beta(testcase, 'uneven', [current_time,
+            #                                nDtree_sum_small_size/(nDtree_res.de_te_count + 0.000001)], 'nDtree')
             update_average_uneven_size_beta(testcase, 'uneven', [current_time,
                                             HK_sum_small_size/(HK_res.de_te_count + 0.000001)], 'HK')
             update_average_uneven_size_beta(testcase, 'uneven', [current_time,
@@ -606,8 +613,8 @@ if __name__ == '__main__':
 
             update_average_uneven_size_beta(testcase, 'beta', [current_time,
                                             Dtree_sum_beta/(Dtree_res.de_te_count + 0.000001)], 'Dtree')
-            update_average_uneven_size_beta(testcase, 'beta', [current_time,
-                                            nDtree_sum_beta/(nDtree_res.de_te_count + 0.000001)], 'nDtree')
+            #update_average_uneven_size_beta(testcase, 'beta', [current_time,
+            #                                nDtree_sum_beta/(nDtree_res.de_te_count + 0.000001)], 'nDtree')
             update_average_uneven_size_beta(testcase, 'beta', [current_time,
                                             HK_sum_beta/(HK_res.de_te_count + 0.000001)], 'HK')
             update_average_uneven_size_beta(testcase, 'beta', [current_time,
@@ -619,10 +626,10 @@ if __name__ == '__main__':
                                    "insertion_te",
                                    [current_time, (Dtree_res.in_te_time - Dtree_res_pre.in_te_time) /
                                     (Dtree_res.in_te_count - Dtree_res_pre.in_te_count + 0.00001)], 'Dtree')
-            update_average_runtime(testcase,
-                                   "insertion_te",
-                                   [current_time, (nDtree_res.in_te_time - nDtree_res_pre.in_te_time) /
-                                    (nDtree_res.in_te_count - nDtree_res_pre.in_te_count + 0.00001)], 'nDtree')
+            #update_average_runtime(testcase,
+            #                       "insertion_te",
+            #                       [current_time, (nDtree_res.in_te_time - nDtree_res_pre.in_te_time) /
+            #                        (nDtree_res.in_te_count - nDtree_res_pre.in_te_count + 0.00001)], 'nDtree')
             update_average_runtime(testcase,
                                    "insertion_te",
                                    [current_time, (HK_res.in_te_time - HK_res_pre.in_te_time) /
@@ -638,10 +645,10 @@ if __name__ == '__main__':
                                    "insertion_nte",
                                    [current_time, (Dtree_res.in_nte_time - Dtree_res_pre.in_nte_time) /
                                     (Dtree_res.in_nte_count - Dtree_res_pre.in_nte_count + 0.00001)], 'Dtree')
-            update_average_runtime(testcase,
-                                   "insertion_nte",
-                                   [current_time, (nDtree_res.in_nte_time - nDtree_res_pre.in_nte_time) /
-                                    (nDtree_res.in_nte_count - nDtree_res_pre.in_nte_count + 0.00001)], 'nDtree')
+            #update_average_runtime(testcase,
+            #                       "insertion_nte",
+            #                       [current_time, (nDtree_res.in_nte_time - nDtree_res_pre.in_nte_time) /
+            #                        (nDtree_res.in_nte_count - nDtree_res_pre.in_nte_count + 0.00001)], 'nDtree')
             update_average_runtime(testcase,
                                    "insertion_nte",
                                    [current_time, (HK_res.in_nte_time - HK_res_pre.in_nte_time) /
@@ -656,10 +663,10 @@ if __name__ == '__main__':
                                    "deletion_te",
                                    [current_time, (Dtree_res.de_te_time - Dtree_res_pre.de_te_time) /
                                     (Dtree_res.de_te_count - Dtree_res_pre.de_te_count + 0.00001)], 'Dtree')
-            update_average_runtime(testcase,
-                                   "deletion_te",
-                                   [current_time, (nDtree_res.de_te_time - nDtree_res_pre.de_te_time) /
-                                    (nDtree_res.de_te_count - nDtree_res_pre.de_te_count + 0.00001)], 'nDtree')
+            #update_average_runtime(testcase,
+            #                       "deletion_te",
+            #                       [current_time, (nDtree_res.de_te_time - nDtree_res_pre.de_te_time) /
+            #                        (nDtree_res.de_te_count - nDtree_res_pre.de_te_count + 0.00001)], 'nDtree')
             update_average_runtime(testcase,
                                    "deletion_te",
                                    [current_time, (HK_res.de_te_time - HK_res_pre.de_te_time) /
@@ -674,10 +681,10 @@ if __name__ == '__main__':
                                    "deletion_nte",
                                    [current_time, (Dtree_res.de_nte_time - Dtree_res_pre.de_nte_time) /
                                     (Dtree_res.de_nte_count - Dtree_res_pre.de_nte_count + 0.00001)], 'Dtree')
-            update_average_runtime(testcase,
-                                   "deletion_nte",
-                                   [current_time, (nDtree_res.de_nte_time - nDtree_res_pre.de_nte_time) /
-                                    (nDtree_res.de_nte_count - nDtree_res_pre.de_nte_count + 0.00001)], 'nDtree')
+            #update_average_runtime(testcase,
+            #                       "deletion_nte",
+            #                       [current_time, (nDtree_res.de_nte_time - nDtree_res_pre.de_nte_time) /
+            #                        (nDtree_res.de_nte_count - nDtree_res_pre.de_nte_count + 0.00001)], 'nDtree')
             update_average_runtime(testcase,
                                    "deletion_nte",
                                    [current_time, (HK_res.de_nte_time - HK_res_pre.de_nte_time) /
@@ -688,7 +695,7 @@ if __name__ == '__main__':
                                     (HDT_res.de_nte_count - HDT_res_pre.de_nte_count + 0.00001)], 'HDT')
 
             copyRes(Dtree_res, Dtree_res_pre)
-            copyRes(nDtree_res, nDtree_res_pre)
+            #copyRes(nDtree_res, nDtree_res_pre)
             copyRes(HK_res, HK_res_pre)
             copyRes(HDT_res, HDT_res_pre)
 
