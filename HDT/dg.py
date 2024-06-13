@@ -151,8 +151,8 @@ def replace(G,u,v,level):
         # Downgrading level-i edges in Tu to level i-1
         # We know that x < y.
         for xy in edgeList:
-            x = xy.info[0]
-            y = xy.info[1]
+            x = xy.val[0]
+            y = xy.val[1]
             G.level[(x,y)] = i-1
             xy.is_level = 0
             decrementLevelCountToRoot(xy)
@@ -163,7 +163,7 @@ def replace(G,u,v,level):
         while Tu.reserve_degree_count and not substituted:
             #HDTlog.write(f'Tu.c {Tu.reserve_degree_count}\n')
             xx = searchReserveNode(Tu)
-            x = xx.info[0]
+            x = xx.val[0]
             toBeRemoved = []
             for y in xx.nte:
                 
