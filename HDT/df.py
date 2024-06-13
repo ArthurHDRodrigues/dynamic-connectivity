@@ -28,11 +28,8 @@ def makeStart(F,u):
     Runs in O(lg n) expected.
     '''
     uu = F.H[(u,u)]
-    o = order(uu)
-    if(o != 1):
-        A,B = split(uu)
-        return join(B,A)
-    return getRoot(uu)
+    A,B = split(uu)
+    return join(B,A)
 
 def addEdgeDF(F,u,v,is_level=1):
     '''

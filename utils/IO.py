@@ -27,6 +27,9 @@ def setup(testcase, start_timestamp, end_timestamp):
     if testcase in ['dblp', 'scholar']:
         test_query_frequency = 1  # run performance test once per year
         test_query_num = end_timestamp - start_timestamp + survival_time  # from year 1980 to year 2021
+    elif testcase == 'cubic':
+        test_query_num = 1  # select 100 test point, calculate the frequency of testing
+        test_query_frequency = (end_timestamp - start_timestamp + 2 * survival_time) // test_query_num 
     else:
         test_query_num = 100  # select 100 test point, calculate the frequency of testing
         test_query_frequency = (end_timestamp - start_timestamp + 2 * survival_time) // test_query_num

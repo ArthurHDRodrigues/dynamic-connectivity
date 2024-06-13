@@ -5,15 +5,15 @@ functions, let n be the number of nodes in the treap.
 '''
 
 class treapNode:
-    def __init__(self, v, prio, is_level=0):
+    def __init__(self, v, priority, is_level=0):
         '''
         Runs in O(1).
         '''
         self.parent = None
         self.left = None
         self.right = None
-        self.prio = prio
-        self.info = v
+        self.priority = priority
+        self.val = v
         self.size = 1
         self.reserve_degree_count = 0
         self.nte = set()
@@ -28,8 +28,8 @@ def printNode(treap):
         print("parent",treap.parent)
         print("left   ",treap.left)
         print("right   ",treap.right)
-        print("prio  ",treap.prio)
-        print("info  ",treap.info)
+        print("priority  ",treap.priority)
+        print("val  ",treap.val)
         print("size   ",treap.size)
         return
     print("treap is None")
@@ -48,7 +48,7 @@ def printSequenceRecursive(treap,i):
     '''
     if(treap):
         printSequenceRecursive(treap.left,i+1)
-        print(3*i*' ',treap.info,treap.prio)
+        print(3*i*' ',treap.val,treap.priority)
         printSequenceRecursive(treap.right,i+1)
 
 
@@ -218,7 +218,7 @@ def join(treapL,treapR):
     if(treapL==None): return treapR
     if(treapR==None): return treapL
 
-    if(treapL.prio > treapR.prio):
+    if(treapL.priority > treapR.priority):
         treapL.size += treapR.size
         treapL.reserve_degree_count += treapR.reserve_degree_count 
         treapL.level_count += treapR.level_count
@@ -354,10 +354,10 @@ def valid_randomized_BST(root):
     if root is None:
         return True
 
-    if root.left is not None and root.prio < root.left.prio:
+    if root.left is not None and root.priority < root.left.priority:
         return False
 
-    if root.right is not None and root.prio < root.right.prio:
+    if root.right is not None and root.priority < root.right.priority:
         return False
 
     return valid_randomized_BST(root.left) & valid_randomized_BST(root.right)
