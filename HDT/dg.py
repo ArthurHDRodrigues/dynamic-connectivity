@@ -218,13 +218,16 @@ def replace(G,u,v,level):
                     else:
                         G.level[(y,x)] = i-1
 
-                    xx = G.F[i-1].H[(x,x)]
-                    xx.nte.add(y)
-                    incrementReserveDegree(xx)
+                    G.F[i-1].nte[x].add(y)
+                    if len( G.F[i-1].nte[x] ) == 1:
+                        xx = G.F[i-1].H[(x,x)]
+                        incrementReserveDegree(xx)
 
-                    yy = G.F[i-1].H[(y,y)]
-                    yy.nte.add(x)
-                    incrementReserveDegree(yy)
+
+                    G.F[i-1].nte[y].add(x)
+                    if len( G.F[i-1].nte[y] ) == 1:
+                        yy = G.F[i-1].H[(y,y)]
+                        incrementReserveDegree(yy)
 
                     #log(HDTlog,'dec','nte', i-1,x,y)
                 else:
