@@ -8,14 +8,19 @@ class dynamicForest:
         Runs in O(n).
         '''
         self.H = dict()
-        for v in range(n):
-            self.H[(v,v)] = treapNode((v,v), random.randint(0,sys.maxsize))
+        self.te = []
+        self.nte = []
+        for i in range(n):
+            self.te.append(set())
+            self.nte.append(set())
 
 
 def connectedDF(F,u,v):
     '''
     Runs in O(lg n) expected.
     '''
+    if (v,v) not in F.H or (u,u) not in F.H:
+        return False
     uu = F.H[(u,u)]
     vv = F.H[(v,v)]
     return getRoot(uu) == getRoot(vv)
