@@ -135,11 +135,10 @@ def incrementReserveDegree(node):
 
     Runs in O(lg n) expected.
     '''
-    if len(node.nte) == 1:
-        tmp = node
-        while tmp != None:
-            tmp.reserve_degree_count+=1
-            tmp = tmp.parent
+    tmp = node
+    while tmp != None:
+        tmp.reserve_degree_count+=1
+        tmp = tmp.parent
 
 def decrementReserveDegree(node):
     '''
@@ -152,11 +151,10 @@ def decrementReserveDegree(node):
     
     Runs in O(lg n) expected.
     '''
-    if len(node.nte) == 0:
-        tmp = node
-        while tmp != None:
-            tmp.reserve_degree_count-=1
-            tmp = tmp.parent
+    tmp = node
+    while tmp != None:
+        tmp.reserve_degree_count-=1
+        tmp = tmp.parent
 
 def decrementLevelCountToRoot(node):
     '''
