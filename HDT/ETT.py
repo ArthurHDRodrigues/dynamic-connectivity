@@ -16,7 +16,6 @@ class treapNode:
         self.val = v
         self.size = 1
         self.reserve_degree_count = 0
-        self.nte = set()
         self.level_count = is_level
         self.is_level = is_level
 
