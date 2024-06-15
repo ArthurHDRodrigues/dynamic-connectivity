@@ -42,12 +42,26 @@ def addEdgeDF(F,u,v,is_level=1):
 
     Runs in O(lg n) expected.
     '''
-    U = makeStart(F,u)
-    V = makeStart(F,v)
+
     uv = treapNode((u,v),random.randint(0,sys.maxsize),is_level)
-    vu = treapNode((v,u),random.randint(0,sys.maxsize),0)
     F.H[(u,v)] = uv
+    if (u,u) not in F.H:
+        F.H[(u,u)] = uv
+        U = None
+    else:
+        F.te[u].add(uv)
+        U = makeStart(F,u)
+
+    vu = treapNode((v,u),random.randint(0,sys.maxsize),0)
     F.H[(v,u)] = vu
+    if (v,v) not in F.H:
+        F.H[(v,v)] = vu
+        V = None
+    else:
+        F.te[v].add(vu)
+        V = makeStart(F,v)
+    
+
     join(join(join(U,uv),V),vu)
 
 
@@ -57,13 +71,49 @@ def remEdgeDF(F,u,v):
     '''
     uv = F.H[(u,v)]
     vu = F.H[(v,u)]
-    Kuv = order(uv)
-    Kvu = order(vu)
-    if(Kuv > Kvu):
-        uv,vu=vu,uv
-    A,B = splitByNode(uv) #Split in S
-    B,C = splitByNode(vu) #Split in S
+    A,B = splitByNode(uv) 
+    join(B,A)
+    A,B = splitByNode(vu) 
+    
+
     del(F.H[(u,v)])
     del(F.H[(v,u)])
-    join(A,C)
+    
+    if F.H[(u,u)] != uv:
+        F.te[u].remove(uv)
+    elif len(F.te[u]) == 0:
+        del(F.H[(u,u)])
+    else:
+        newuw = F.te[u].pop()
+        F.H[(u,u)] = newuw
+        if len(F.nte[u]) > 0:
+            incrementReserveDegree(newuw)
+    
+    if F.H[(v,v)] != vu:
+        F.te[v].remove(vu)
+    elif len(F.te[v]) == 0:
+        del(F.H[(v,v)])
+    else:
+        newvw = F.te[v].pop()
+        F.H[(v,v)] = newvw
+        if len(F.nte[v]) > 0:
+            incrementReserveDegree(newvw)
 
+def searchReserveNode(F, root):
+    '''
+    Returns a node which has incident reserve edges.
+
+    It assumes that root.reserve_degree_count > 0.
+
+    Runs in O(lg n) expected.
+    '''
+    print('nte_count', root.reserve_degree_count,len(F.nte[root.val[0]]))
+    print('   left_count', root.left.reserve_degree_count)
+    print('   right_count', root.right.reserve_degree_count)
+    if len(F.nte[root.val[0]]):
+        return root
+
+    if(root.left and root.left.reserve_degree_count > 0):
+        return searchReserveNode(F, root.left)
+    
+    return searchReserveNode(F, root.right)
