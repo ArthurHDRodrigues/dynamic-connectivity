@@ -34,13 +34,16 @@ def addNonTreeEdge(G, u, v):
     if (u,v) in G.level:
         return
     G.level[(u,v)] = G.maxLevel
-    uu = G.F[G.maxLevel].H[(u,u)]
-    uu.nte.add(v)
-    incrementReserveDegree(uu)
+
+    G.F[G.maxLevel].nte[u].add(v)
+    if len(G.F[G.maxLevel].nte[u]) == 1:
+        uu = G.F[G.maxLevel].H[(u,u)]
+        incrementReserveDegree(uu)
     
-    vv = G.F[G.maxLevel].H[(v,v)]
-    vv.nte.add(u)
-    incrementReserveDegree(vv)
+    G.F[G.maxLevel].nte[v].add(u)
+    if len(G.F[G.maxLevel].nte[v]) == 1:
+        vv = G.F[G.maxLevel].H[(v,v)]
+        incrementReserveDegree(vv)
 
 def addEdge(G,u,v):
     '''
@@ -95,14 +98,15 @@ def remNonTreeEdge(G,u,v):
     level = G.level[(u,v)]
     del(G.level[(u,v)])
     
-    uu = G.F[level].H[(u,u)]
-    uu.nte.remove(v)
-    decrementReserveDegree(uu)
-    
-    vv = G.F[level].H[(v,v)]
-    vv.nte.remove(u)
-    decrementReserveDegree(vv)
+    G.F[level].nte[u].remove(v)
+    if len( G.F[level].nte[u] ) == 0:
+        uu = G.F[level].H[(u,u)]
+        decrementReserveDegree(uu)
 
+    G.F[level].nte[v].remove(u)
+    if len( G.F[level].nte[v] ) == 0:
+        vv = G.F[level].H[(v,v)]
+        decrementReserveDegree(vv)
 
 def remEdge(G,u,v):
     '''
@@ -140,6 +144,41 @@ def replace(G,u,v,level):
     '''
     substituted = False
     for i in range(level,G.maxLevel+1):
+        if (u,u) not in G.F[i].H:
+            if len(G.F[i].nte[u]) > 0:
+                xy = G.F[i].nte[u].pop()
+                x,y = xy.val
+                if x < y:
+                    a = x
+                    b = y
+                else:
+                    a = y
+                    b = x
+                addEdgeDF(G.F[i],a,b)
+                for j in range(i+1,G.maxLevel+1):
+                    addEdgeDF(G.F[j],a,b,0)
+                return
+            continue
+        if (v,v) not in G.F[i].H:
+            if len(G.F[i].nte[v]) > 0:
+                xy = G.F[i].nte[v].pop()
+                x,y = xy.val
+                if x < y:
+                    a = x
+                    b = y
+                else:
+                    a = y
+                    b = x
+                addEdgeDF(G.F[i],a,b)
+                for j in range(i+1,G.maxLevel+1):
+                    addEdgeDF(G.F[j],a,b,0)
+                return
+            continue
+        
+
+
+
+
         Tv = getRoot(G.F[i].H[(v,v)])
         Tu = getRoot(G.F[i].H[(u,u)])
         if Tv.size < Tu.size:
