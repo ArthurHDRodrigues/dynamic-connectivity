@@ -47,6 +47,8 @@ def addEdgeDF(F,u,v,is_level=1):
     F.H[(u,v)] = uv
     if (u,u) not in F.H:
         F.H[(u,u)] = uv
+        if len(F.nte[u]) > 0:
+            incrementReserveDegree(uv)
         U = None
     else:
         F.te[u].add(uv)
@@ -56,6 +58,8 @@ def addEdgeDF(F,u,v,is_level=1):
     F.H[(v,u)] = vu
     if (v,v) not in F.H:
         F.H[(v,v)] = vu
+        if len(F.nte[v]) > 0:
+            incrementReserveDegree(vu)
         V = None
     else:
         F.te[v].add(vu)
@@ -71,10 +75,10 @@ def remEdgeDF(F,u,v):
     '''
     uv = F.H[(u,v)]
     vu = F.H[(v,u)]
-    A,B = splitByNode(uv) 
-    join(B,A)
-    A,B = splitByNode(vu) 
-    
+    A,B = splitByNode(uv, F.H[(u,u)] == uv and len(F.nte[u]) > 0 ) 
+
+    C = join(B,A)
+    A,B = splitByNode(vu, F.H[(v,v)] == vu and len(F.nte[v]) > 0 ) 
 
     del(F.H[(u,v)])
     del(F.H[(v,u)])
@@ -107,10 +111,14 @@ def searchReserveNode(F, root):
 
     Runs in O(lg n) expected.
     '''
-    print('nte_count', root.reserve_degree_count,len(F.nte[root.val[0]]))
-    print('   left_count', root.left.reserve_degree_count)
-    print('   right_count', root.right.reserve_degree_count)
-    if len(F.nte[root.val[0]]):
+    print(root.val[0],root.reserve_degree_count, len(F.nte[root.val[0]]))
+    if root.left != None:
+        print('   l',root.left.val[0],root.left.reserve_degree_count, len(F.nte[root.left.val[0]]))
+    if root.right != None:
+        print('   r',root.right.val[0],root.right.reserve_degree_count,len(F.nte[root.right.val[0]]) )
+    u = root.val[0]
+    if F.H[(u,u)] == root and len(F.nte[u]):
+        print('fim')
         return root
 
     if(root.left and root.left.reserve_degree_count > 0):
