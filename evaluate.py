@@ -256,10 +256,25 @@ if __name__ == '__main__':
 
             # HDT
             
+            if (a,a) not in HDT_graph.F[HDT_graph.maxLevel].H:
+                HDT_graph.F[HDT_graph.maxLevel].H[(a,a)] = dg.treapNode((a,a),0,0)
+                a_is_placeholder = True
+            if (b,b) not in HDT_graph.F[HDT_graph.maxLevel].H:
+                HDT_graph.F[HDT_graph.maxLevel].H[(b,b)] = dg.treapNode((b,b),0,0)
+                b_is_placeholder = True
+            
             start = timer()
             root_a = dg.getRoot(HDT_graph.F[HDT_graph.maxLevel].H[(a,a)])
             root_b = dg.getRoot(HDT_graph.F[HDT_graph.maxLevel].H[(b,b)])
             go_to_root_HDT = timer() - start
+
+            if a_is_placeholder:
+                a_is_placeholder = False
+                del(HDT_graph.F[HDT_graph.maxLevel].H[(a,a)])
+            if b_is_placeholder:
+                b_is_placeholder = False
+                del(HDT_graph.F[HDT_graph.maxLevel].H[(b,b)])
+
             
             if root_a != root_b:
                 HDT_res.in_te_count += 1
@@ -494,7 +509,10 @@ if __name__ == '__main__':
                 HK_Sd += HK_d
                 HK_accumulated_dist[HK_d] += 1
                 
-                HDT_d = Dtree_utils.toRoot(HDT_graph.F[HDT_graph.maxLevel].H[(v,v)])
+                if (v,v) not in HDT_graph.F[HDT_graph.maxLevel].H:
+                    HDT_d = 0
+                else:
+                    HDT_d = Dtree_utils.toRoot(HDT_graph.F[HDT_graph.maxLevel].H[(v,v)])
                 HDT_Sd += HDT_d
                 HDT_accumulated_dist[HDT_d] += 1
 
