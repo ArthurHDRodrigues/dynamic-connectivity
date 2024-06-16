@@ -124,6 +124,43 @@ def searchReserveNode(root):
 #  Methods update info from treaps
 ##################################
 
+def sanityCheck(node,F):
+    if node is None:
+        return
+    u = node.val[0]
+    if F.H[(u,u)] == node and len(F.nte[u]) > 0:
+        count = 1
+    else:
+        count = 0
+
+    l = 0
+    if node.left != None:
+        l = node.left.reserve_degree_count 
+    r = 0
+    if node.right != None:
+        r = node.right.reserve_degree_count 
+
+    if count+l+r != node.reserve_degree_count:
+        tmp = node
+        while tmp != None:
+            print(tmp.val,tmp.reserve_degree_count)
+            u = tmp.val[0]
+            print('active',F.H[(u,u)] == tmp and len(F.nte[u]) > 0)
+            print('nte',len(F.nte[u]))
+            if tmp.left != None:
+                print('l',tmp.left.reserve_degree_count)
+            else:
+                print('l None')
+            if tmp.right != None:
+                print('r',tmp.right.reserve_degree_count)
+            else:
+                print('r None')
+            tmp = tmp.parent
+        raise Exception("sanity check")
+    sanityCheck(node.left,F)
+    sanityCheck(node.right,F)
+    
+
 def incrementReserveDegree(node):
     '''
     Increments the field reserve_degree and, if necessary,
@@ -294,7 +331,7 @@ def split(node):
     return L,R
 
 
-def splitByNode(node):
+def splitByNode(node, decrement):
     '''
     Splits the treap that contains the given node in two treaps.
     The first contains all nodes with keys less than the key of 
@@ -307,10 +344,15 @@ def splitByNode(node):
 
     Runs in O(lg(n)) expected.
     '''
-    if(node==None): return None,None
+    if(node==None):
+        return None,None
     R = node.right
     L = node.left
-
+    node.right = None
+    node.left = None
+    
+    if decrement:
+        decrementReserveDegree(node) 
 
     tmp = node
     while(tmp.parent != None):
