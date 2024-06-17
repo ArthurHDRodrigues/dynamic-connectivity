@@ -19,6 +19,8 @@ def connectedDF(F,u,v):
     '''
     Runs in O(lg n) expected.
     '''
+    if u == v:
+        return True
     if (v,v) not in F.H or (u,u) not in F.H:
         return False
     uu = F.H[(u,u)]
@@ -111,14 +113,8 @@ def searchReserveNode(F, root):
 
     Runs in O(lg n) expected.
     '''
-    print(root.val[0],root.reserve_degree_count, len(F.nte[root.val[0]]))
-    if root.left != None:
-        print('   l',root.left.val[0],root.left.reserve_degree_count, len(F.nte[root.left.val[0]]))
-    if root.right != None:
-        print('   r',root.right.val[0],root.right.reserve_degree_count,len(F.nte[root.right.val[0]]) )
     u = root.val[0]
     if F.H[(u,u)] == root and len(F.nte[u]):
-        print('fim')
         return root
 
     if(root.left and root.left.reserve_degree_count > 0):
