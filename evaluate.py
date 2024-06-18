@@ -77,6 +77,7 @@ if __name__ == '__main__':
         HK_utils.HK_constructSF(graph, 0, max_priority)
 
     HDT_graph = dg.dynamicGraph(n) # n == 200000
+    HDT_H = HDT_graph.F[HDT_graph.maxLevel].H
 
     expiredDict = defaultdict(set)
     inserted_edge = defaultdict()
@@ -256,11 +257,11 @@ if __name__ == '__main__':
 
             # HDT
             
-            if (a,a) not in HDT_graph.F[HDT_graph.maxLevel].H:
-                HDT_graph.F[HDT_graph.maxLevel].H[(a,a)] = dg.treapNode((a,a),0,0)
+            if (a,a) not in HDT_H:
+                HDT_H[(a,a)] = dg.treapNode((a,a),0,0)
                 a_is_placeholder = True
-            if (b,b) not in HDT_graph.F[HDT_graph.maxLevel].H:
-                HDT_graph.F[HDT_graph.maxLevel].H[(b,b)] = dg.treapNode((b,b),0,0)
+            if (b,b) not in HDT_H:
+                HDT_H[(b,b)] = dg.treapNode((b,b),0,0)
                 b_is_placeholder = True
             
             start = timer()
@@ -270,10 +271,10 @@ if __name__ == '__main__':
 
             if a_is_placeholder:
                 a_is_placeholder = False
-                del(HDT_graph.F[HDT_graph.maxLevel].H[(a,a)])
+                del(HDT_H[(a,a)])
             if b_is_placeholder:
                 b_is_placeholder = False
-                del(HDT_graph.F[HDT_graph.maxLevel].H[(b,b)])
+                del(HDT_H[(b,b)])
 
             
             if root_a != root_b:
@@ -509,10 +510,10 @@ if __name__ == '__main__':
                 HK_Sd += HK_d
                 HK_accumulated_dist[HK_d] += 1
                 
-                if (v,v) not in HDT_graph.F[HDT_graph.maxLevel].H:
+                if (v,v) not in HDT_H:
                     HDT_d = 0
                 else:
-                    HDT_d = Dtree_utils.toRoot(HDT_graph.F[HDT_graph.maxLevel].H[(v,v)])
+                    HDT_d = Dtree_utils.toRoot(HDT_H[(v,v)])
                 HDT_Sd += HDT_d
                 HDT_accumulated_dist[HDT_d] += 1
 
@@ -545,7 +546,7 @@ if __name__ == '__main__':
 
             start = timer()
             for (x, y) in test_edges:
-                tree_utils.query(x, y, HDT_graph.F[HDT_graph.maxLevel].H )
+                tree_utils.query(x, y, HDT_H )
                 #dg.connectedDF(HDT_graph.F[HDT_graph.maxLevel], x, y)
             query_HDT = timer() - start
 
