@@ -545,7 +545,8 @@ if __name__ == '__main__':
 
             start = timer()
             for (x, y) in test_edges:
-                dg.connectedDF(HDT_graph.F[HDT_graph.maxLevel], x, y)
+                tree_utils.query(x, y, HDT_graph.F[HDT_graph.maxLevel].H )
+                #dg.connectedDF(HDT_graph.F[HDT_graph.maxLevel], x, y)
             query_HDT = timer() - start
 
             '''
