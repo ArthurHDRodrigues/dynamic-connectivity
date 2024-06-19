@@ -331,7 +331,7 @@ def split(node):
     return L,R
 
 
-def splitByNode(node, decrement):
+def splitByNode(node):
     '''
     Splits the treap that contains the given node in two treaps.
     The first contains all nodes with keys less than the key of 
@@ -351,9 +351,6 @@ def splitByNode(node, decrement):
     node.right = None
     node.left = None
     
-    if decrement:
-        decrementReserveDegree(node) 
-
     tmp = node
     while(tmp.parent != None):
         if(tmp.parent.right == tmp):
@@ -400,3 +397,39 @@ def valid_randomized_BST(root):
         return False
 
     return valid_randomized_BST(root.left) & valid_randomized_BST(root.right)
+
+
+def successor(current_node):
+    '''
+    Return the successor in a ciclic order of the nodes.
+    That is, the sucessor of the node with the biggest key
+    is the node with the smallest key
+    '''
+    if current_node.right is not None:
+        succ = current_node.right
+        while succ.left is not None:
+            succ = succ.left
+        return succ
+    else:
+        if current_node.parent is None:
+            # current_node is the root of the tree
+            # and the node with the biggest key 
+            # then we return the first node
+            succ = current_node
+            while succ.left:
+                succ = succ.left
+            return succ
+        else:
+            parent_pointer = current_node.parent
+            current_pointer = current_node
+            while parent_pointer is not None:
+                if current_pointer == parent_pointer.left:
+                    return parent_pointer
+                current_pointer = parent_pointer
+                parent_pointer = parent_pointer.parent
+        # current_node is the right most node
+        # then we return the first node
+        # current_pointer is the root of the tree
+        while current_pointer.left is not None:
+            current_pointer = current_pointer.left
+        return current_pointer

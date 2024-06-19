@@ -8,10 +8,8 @@ class dynamicForest:
         Runs in O(n).
         '''
         self.H = dict()
-        self.te = []
         self.nte = []
         for i in range(n):
-            self.te.append(set())
             self.nte.append(set())
 
 
@@ -53,7 +51,6 @@ def addEdgeDF(F,u,v,is_level=1):
             incrementReserveDegree(uv)
         U = None
     else:
-        F.te[u].add(uv)
         U = makeStart(F,u)
 
     vu = treapNode((v,u),random.randint(0,sys.maxsize),0)
@@ -64,7 +61,6 @@ def addEdgeDF(F,u,v,is_level=1):
             incrementReserveDegree(vu)
         V = None
     else:
-        F.te[v].add(vu)
         V = makeStart(F,v)
     
 
@@ -77,33 +73,45 @@ def remEdgeDF(F,u,v):
     '''
     uv = F.H[(u,v)]
     vu = F.H[(v,u)]
-    A,B = splitByNode(uv, F.H[(u,u)] == uv and len(F.nte[u]) > 0 ) 
 
+    # if (F.H[(u,u)] == uv and len(F.nte[u]) > 0) is True
+    # then we need to decrement the reserve degree before
+    # splitting.
+    if F.H[(u,u)] == uv and len(F.nte[u]) > 0:
+        decrementReserveDegree(uv)
+    if F.H[(v,v)] == vu and len(F.nte[v]) > 0:
+        decrementReserveDegree(vu)
+    
+    # Fix F.H[(v,v)] and F.H[(u,u)]
+    # We need to do it before splitting to check if 
+    # uv is sucessor of vu or vice versa
+    successor_uv = successor(uv)
+    if  successor_uv == vu:
+        # v is going to be an isolated vertex
+        # and we know that F.H[(v,v)] == vu
+        del(F.H[(v,v)])
+    elif successor_uv is not None:
+        F.H[(v,v)] = successor_uv
+        if len(F.nte[v]) > 0:
+            incrementReserveDegree( successor_uv )
+    
+    successor_vu = successor(vu)
+    if  successor_vu == uv:
+        # u is going to be an isolated vertex
+        # and we know that F.H[(u,u)] == uv
+        del(F.H[(u,u)])
+    elif successor_vu is not None:
+        F.H[(u,u)] = successor_vu
+        if len(F.nte[u]) > 0:
+            incrementReserveDegree( successor_vu )
+        
+    A,B = splitByNode(uv)
     C = join(B,A)
-    A,B = splitByNode(vu, F.H[(v,v)] == vu and len(F.nte[v]) > 0 ) 
+    D,E = splitByNode(vu) 
 
     del(F.H[(u,v)])
     del(F.H[(v,u)])
     
-    if F.H[(u,u)] != uv:
-        F.te[u].remove(uv)
-    elif len(F.te[u]) == 0:
-        del(F.H[(u,u)])
-    else:
-        newuw = F.te[u].pop()
-        F.H[(u,u)] = newuw
-        if len(F.nte[u]) > 0:
-            incrementReserveDegree(newuw)
-    
-    if F.H[(v,v)] != vu:
-        F.te[v].remove(vu)
-    elif len(F.te[v]) == 0:
-        del(F.H[(v,v)])
-    else:
-        newvw = F.te[v].pop()
-        F.H[(v,v)] = newvw
-        if len(F.nte[v]) > 0:
-            incrementReserveDegree(newvw)
 
 def searchReserveNode(F, root):
     '''
