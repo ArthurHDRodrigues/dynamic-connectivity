@@ -77,10 +77,15 @@ def remEdgeDF(F,u,v):
     '''
     uv = F.H[(u,v)]
     vu = F.H[(v,u)]
-    A,B = splitByNode(uv, F.H[(u,u)] == uv and len(F.nte[u]) > 0 ) 
+    if F.H[(u,u)] == uv and len(F.nte[u]) > 0:
+        decrementReserveDegree(uv)
+    if F.H[(v,v)] == vu and len(F.nte[v]) > 0:
+        decrementReserveDegree(vu)
 
+
+    A,B = splitByNode(uv) 
     C = join(B,A)
-    A,B = splitByNode(vu, F.H[(v,v)] == vu and len(F.nte[v]) > 0 ) 
+    A,B = splitByNode(vu) 
 
     del(F.H[(u,v)])
     del(F.H[(v,u)])

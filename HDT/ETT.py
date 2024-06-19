@@ -331,7 +331,7 @@ def split(node):
     return L,R
 
 
-def splitByNode(node, decrement):
+def splitByNode(node):
     '''
     Splits the treap that contains the given node in two treaps.
     The first contains all nodes with keys less than the key of 
@@ -351,9 +351,6 @@ def splitByNode(node, decrement):
     node.right = None
     node.left = None
     
-    if decrement:
-        decrementReserveDegree(node) 
-
     tmp = node
     while(tmp.parent != None):
         if(tmp.parent.right == tmp):
