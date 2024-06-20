@@ -265,8 +265,8 @@ if __name__ == '__main__':
                 b_is_placeholder = True
             
             start = timer()
-            root_a = dg.getRoot(HDT_graph.F[HDT_graph.maxLevel].H[(a,a)])
-            root_b = dg.getRoot(HDT_graph.F[HDT_graph.maxLevel].H[(b,b)])
+            root_a = dg.getRoot(HDT_H[(a,a)])
+            root_b = dg.getRoot(HDT_H[(b,b)])
             go_to_root_HDT = timer() - start
 
             if a_is_placeholder:
@@ -533,22 +533,32 @@ if __name__ == '__main__':
             query_nDtree = timer() - start
             '''
 
-            start = timer()
+            Dtree_error = 0
+            HK_error = 0
             for (x, y) in test_edges:
-                Dtree_utils.query(Dtree[x], Dtree[y])
-            query_Dtree = timer() - start
+                start = timer()
+                Dtree_result = Dtree_utils.query(Dtree[x], Dtree[y])
+                query_Dtree = timer() - start
 
-            start = timer()
-            for (x, y) in test_edges:
-                tree_utils.query(x, y, HK_active_occurrence_dict)
-            query_HK = timer() - start
+                start = timer()
+                HK_result = tree_utils.query(x, y, HK_active_occurrence_dict)
+                query_HK = timer() - start
 
 
-            start = timer()
-            for (x, y) in test_edges:
-                tree_utils.query(x, y, HDT_H )
+                start = timer()
+                HDT_result = tree_utils.query((x,x), (y,y), HDT_H )
                 #dg.connectedDF(HDT_graph.F[HDT_graph.maxLevel], x, y)
-            query_HDT = timer() - start
+                query_HDT = timer() - start
+
+                if Dtree_result != HDT_result:
+                    #print("!!ERRO!!")
+                    #print("Resultado de Dtree é diferente ao resultado do HDT")
+                    #print("HDT:",HDT_result,"Dtree:",Dtree_result)
+                    Dtree_error+=1
+                if HK_result != HDT_result:
+                    #print("!!ERRO!!")
+                    #print("Resultado de HK é diferente ao resultado do HDT")
+                    HK_error+=1
 
             '''
             query_ET = 0
@@ -578,6 +588,7 @@ if __name__ == '__main__':
 
 
             printRes("connectivity query", query_data)
+            print("All errors: HK:",HK_error, "Dtree",Dtree_error)
 
             """ All below are outputing results """
             # output results to file
